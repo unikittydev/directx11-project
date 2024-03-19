@@ -18,7 +18,7 @@ Shaders::~Shaders()
     //}
 }
 
-Shader* Shaders::GetShader(std::wstring path, InputLayoutOption layoutOptions)
+Shader* Shaders::Get(std::wstring path, InputLayoutOption layoutOptions)
 {
     Shader* shader = s_instance->shaders[path];
     if (shader == nullptr)

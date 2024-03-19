@@ -2,6 +2,8 @@
 
 #include <d3d11.h>
 
+#include "Application/Application.h"
+
 template<typename TBuffer>
 class ConstantBuffer
 {
@@ -9,8 +11,10 @@ private:
 	ID3D11Buffer* buffer;
 
 public:
-	ConstantBuffer(ID3D11Device* device, TBuffer& data, int count = 1)
+	ConstantBuffer(TBuffer& data, int count = 1)
 	{
+		auto* device = Application::GetDevicePtr();
+		
 		D3D11_BUFFER_DESC bufferDesc = {};
 		bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
 		bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;

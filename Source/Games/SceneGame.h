@@ -5,9 +5,11 @@
 #include "Components/Camera/Camera.h"
 #include "Components/Camera/CameraFPSController.h"
 #include "Components/CubeComponent.h"
+#include "Components/MeshComponent.h"
 #include "Components/SphereComponent.h"
 #include "Components/ResetAndRotate.h"
 #include "Core/Color.h"
+#include "Graphics/ModelImporter.h"
 
 class SceneGame : public Game
 {
@@ -105,5 +107,20 @@ public:
 				//std::cout << "MOON " << j << " " << moonTr->GetWorldTranslation().x << " " << moonTr->GetWorldTranslation().y << " " << moonTr->GetWorldTranslation().z << std::endl;
 			}
 		}
+		
+		ModelImporter importer{};
+
+		Entity eMesh = CreateEntity();
+		auto* meshTr = AddComponent<Transform>(eMesh);
+			
+		Mesh** meshes = nullptr;
+		//int mCount = importer.ImportMeshes("./Models/SM_Sofa.fbx", meshes);
+		//for (int i = 0; i < mCount; ++i)
+		//{
+			//meshes[i]->SetShader(Shaders::Get(L"./Shaders/Test.hlsl", Position));
+			//auto* mComp = AddComponent<MeshComponent>(eMesh);
+			//mComp->SetCamera(cam);
+			//mComp->SetMesh(meshes[i]);
+		//}
 	}
 };

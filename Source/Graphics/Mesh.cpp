@@ -1,6 +1,12 @@
 #include "Mesh.h"
 
+#include "Shaders.h"
 #include "Application/Application.h"
+
+Mesh::Mesh() : worldDataBuffer(worldData, 1), meshDataBuffer(meshData, 1)
+{
+	shader = Shaders::Get(L"./Shaders/Default.hlsl", Position | VertexColor | UV0);
+}
 
 void Mesh::Draw(matrix vp, matrix localToWorld)
 {
@@ -33,6 +39,11 @@ void Mesh::Draw(matrix vp, matrix localToWorld)
 	shader->SetActive();
 
 	ctx->DrawIndexed(indexCount, 0, 0);
+}
+
+void Mesh::SetShader(Shader* shader)
+{
+	this->shader = shader;
 }
 
 void Mesh::SetColor(float4 color)

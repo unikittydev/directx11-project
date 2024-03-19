@@ -6,7 +6,6 @@
 
 #include "Shader.h"
 #include "ConstantBuffer.h"
-#include "Shaders.h"
 
 class Mesh
 {
@@ -21,7 +20,6 @@ private:
 		float4 color;
 	} meshData;
 
-	// TODO: DON'T CREATE SHADER IN EVERY MESH
 	Shader* shader;
 
 	ID3D11Buffer* vertexBuffer;
@@ -36,16 +34,15 @@ private:
 	ConstantBuffer<MeshData> meshDataBuffer;
 
 public:
-	Mesh(ID3D11Device* device) : worldDataBuffer(device, worldData, 1), meshDataBuffer(device, meshData, 1)
-	{
-		shader = Shaders::GetShader(L"./Shaders/Default.hlsl", Position | VertexColor | UV0);
-	}
+	Mesh();
 
 	void Release();
 
 	template<typename TIndex>
-	void SetIndices(ID3D11Device* device, TIndex* indices, UINT count, DXGI_FORMAT indexFormat = DXGI_FORMAT_R32_UINT)
+	void SetIndices(TIndex* indices, UINT count, DXGI_FORMAT indexFormat = DXGI_FORMAT_R32_UINT)
 	{
+		auto* device = Application::GetDevicePtr();
+		
 		D3D11_BUFFER_DESC bufferDesc = {};
 		bufferDesc.Usage = D3D11_USAGE_DEFAULT;
 		bufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
@@ -69,8 +66,10 @@ public:
 	}
 
 	template<typename TVertex>
-	void SetVertices(ID3D11Device* device, TVertex* vertices, UINT count)
+	void SetVertices(TVertex* vertices, UINT count)
 	{
+		auto* device = Application::GetDevicePtr();
+		
 		D3D11_BUFFER_DESC bufferDesc = {};
 		bufferDesc.Usage = D3D11_USAGE_DEFAULT;
 		bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
@@ -93,6 +92,8 @@ public:
 		this->vertexCount = count;
 	}
 
+	void SetShader(Shader* shader);
+	
 	void SetColor(float4 color);
 
 	void Draw(matrix vp, matrix localToWorld);

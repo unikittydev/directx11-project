@@ -13,34 +13,9 @@ Mesh CubePrimitive(const float4& color = { 1.0f, 1.0f, 1.0f, 1.0f })
 		float4 color;
 		float4 uv;
 	};
-
-	auto* device = Application::GetDevicePtr();
-	auto* ctx = Application::GetDeviceContext();
-
-	Mesh mesh(device);
+	
+	Mesh mesh{};
 	mesh.SetColor(color);
-
-	/*const UINT indices[36] =
-	{
-		0, 1, 2, 0, 2, 3,
-		4, 6, 5, 4, 7, 6,
-		4, 5, 1, 4, 1, 0,
-		3, 2, 6, 3, 6, 7,
-		1, 5, 6, 1, 6, 2,
-		4, 0, 3, 4, 3, 7
-	};
-
-	const Vertex vertices[8]
-	{
-		Vertex { float4(-1.0f, -1.0f, -1.0f, 1.0f), float4(1, 1, 1, 1), float2(0, 0) },
-		Vertex { float4(-1.0f,  1.0f, -1.0f, 1.0f), float4(1, 1, 1, 1), float2(0, 0) },
-		Vertex { float4(1.0f,  1.0f, -1.0f, 1.0f), float4(1, 1, 1, 1), float2(0, 0) },
-		Vertex { float4(1.0f, -1.0f, -1.0f, 1.0f), float4(1, 1, 1, 1), float2(0, 0) },
-		Vertex { float4(-1.0f, -1.0f,  1.0f, 1.0f), float4(1, 1, 1, 1), float2(0, 0) },
-		Vertex { float4(-1.0f,  1.0f,  1.0f, 1.0f), float4(1, 1, 1, 1), float2(0, 0) },
-		Vertex { float4(1.0f,  1.0f,  1.0f, 1.0f), float4(1, 1, 1, 1), float2(0, 0) },
-		Vertex { float4(1.0f, -1.0f,  1.0f, 1.0f), float4(1, 1, 1, 1), float2(0, 0) }
-	};*/
 
 	Vertex vertices[] =
 	{
@@ -98,8 +73,8 @@ Mesh CubePrimitive(const float4& color = { 1.0f, 1.0f, 1.0f, 1.0f })
 		20, 21, 22, 22, 23, 20,
 	};
 
-	mesh.SetIndices(device, indices, ARRAYSIZE(indices));
-	mesh.SetVertices(device, vertices, ARRAYSIZE(vertices));
+	mesh.SetIndices(indices, ARRAYSIZE(indices));
+	mesh.SetVertices(vertices, ARRAYSIZE(vertices));
 
 	return std::move(mesh);
 }
@@ -113,10 +88,7 @@ Mesh SpherePrimitive(const float4& color = { 1.0f, 1.0f, 1.0f, 1.0f })
 		float4 uv;
 	};
 
-	auto* device = Application::GetDevicePtr();
-	auto* ctx = Application::GetDeviceContext();
-
-	Mesh mesh(device);
+	Mesh mesh{};
 	mesh.SetColor(color);
 
 	const float thau = 6.28318530718f;
@@ -146,8 +118,6 @@ Mesh SpherePrimitive(const float4& color = { 1.0f, 1.0f, 1.0f, 1.0f })
 	const int indexCount = ringsAmount * resolution * 6;
 	UINT indices[indexCount];
 
-	const UINT quadOffset[6] = { 0, 1, 2, 2, 3, 0 };
-
 	for (int j = 0; j < ringsAmount; j++)
 		for (int i = 0; i < resolution; i++)
 		{
@@ -161,8 +131,8 @@ Mesh SpherePrimitive(const float4& color = { 1.0f, 1.0f, 1.0f, 1.0f })
 			indices[6 * index + 5] = index;
 		}
 
-	mesh.SetIndices(device, indices, indexCount);
-	mesh.SetVertices(device, vertices, vertexCount);
+	mesh.SetIndices(indices, indexCount);
+	mesh.SetVertices(vertices, vertexCount);
 
 	return std::move(mesh);
 }

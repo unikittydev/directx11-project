@@ -18,5 +18,5 @@ public:
 
     ~Shaders();
     
-    static Shader* GetShader(std::wstring path, InputLayoutOption layoutOptions);
+    static Shader* Get(std::wstring path, InputLayoutOption layoutOptions);
 };
