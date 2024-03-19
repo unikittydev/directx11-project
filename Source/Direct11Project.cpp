@@ -2,7 +2,6 @@
 #pragma comment(lib, "dxgi.lib")
 #pragma comment(lib, "d3dcompiler.lib")
 #pragma comment(lib, "dxguid.lib")
-#pragma comment(lib, "assimp-vc142-mtd.lib")
 
 #include <iostream>
 
