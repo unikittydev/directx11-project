@@ -2,8 +2,6 @@
 
 #include <d3d11.h>
 
-#include "../../ThirdParty/SimpleMath.h"
-
 template<typename TBuffer>
 class ConstantBuffer
 {

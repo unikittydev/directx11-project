@@ -1,4 +1,6 @@
-#include "Source/Games/Game.h"
+#ifndef GAME_HPP
+#define GAME_HPP
+#include "Games/Game.h"
 
 template<typename T>
 T* Game::AddComponent(Entity e)
@@ -48,3 +50,4 @@ T* Game::GetComponent(Entity e)
 	}
 	return nullptr;
 }
+#endif // GAME_HPP

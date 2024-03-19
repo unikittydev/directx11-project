@@ -1,9 +1,9 @@
 #pragma once
 
-#include "ThirdParty/SimpleMath.h"
-#include "Source/Components/IComponent.h"
-#include "Source/Components/Transform.h"
-#include "Source/Games/Game.h"
+#include "Core/Types.h"
+#include "IComponent.h"
+#include "Transform.h"
+#include "Games/Game.h"
 
 class MoveRotateComponent : public IComponent
 {

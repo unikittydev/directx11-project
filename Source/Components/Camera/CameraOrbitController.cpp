@@ -1,7 +1,8 @@
 #pragma once
 
 #include "CameraOrbitController.h"
-#include "Source/Components/CameraFPSController.h"
+#include "Components/Camera/CameraFPSController.h"
+#include "Games/Game.h"
 
 #include <iostream>
 

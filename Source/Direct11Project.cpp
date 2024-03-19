@@ -5,7 +5,7 @@
 
 #include <iostream>
 
-#include "Source/Games/SceneGame.h"
+#include "Games/SceneGame.h"
 
 int main()
 {

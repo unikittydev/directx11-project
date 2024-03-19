@@ -1,7 +1,6 @@
 #pragma once
 
-#include "../../ThirdParty/SimpleMath.h"
-
+#include "Core/Types.h"
 #include "IComponent.h"
 
 class Transform : public IComponent
@@ -15,7 +14,7 @@ private:
 
 	matrix GetParentWorldMatrix() const;
 public:
-	Transform(Entity entity) : IComponent(entity)
+	Transform(Entity entity) : IComponent(entity), parent(nullptr)
 	{
 
 	}

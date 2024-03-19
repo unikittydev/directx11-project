@@ -1,12 +1,12 @@
 #pragma once
 
-#include <DirectXMath.h>
 #include <d3d11.h>
 
-#include "../../ThirdParty/SimpleMath.h"
+#include "Core/Types.h"
 
 #include "Shader.h"
 #include "ConstantBuffer.h"
+#include "Shaders.h"
 
 class Mesh
 {
@@ -22,7 +22,7 @@ private:
 	} meshData;
 
 	// TODO: DON'T CREATE SHADER IN EVERY MESH
-	Shader shader;
+	Shader* shader;
 
 	ID3D11Buffer* vertexBuffer;
 	UINT vertexSize;
@@ -36,9 +36,9 @@ private:
 	ConstantBuffer<MeshData> meshDataBuffer;
 
 public:
-	Mesh(ID3D11Device* device) : worldDataBuffer(device, worldData, 1), meshDataBuffer(device, meshData, 1), shader(L"./Shaders/Default.hlsl")
+	Mesh(ID3D11Device* device) : worldDataBuffer(device, worldData, 1), meshDataBuffer(device, meshData, 1)
 	{
-
+		shader = Shaders::GetShader(L"./Shaders/Default.hlsl", Position | VertexColor | UV0);
 	}
 
 	void Release();

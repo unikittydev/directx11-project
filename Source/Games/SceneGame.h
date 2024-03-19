@@ -2,13 +2,12 @@
 
 #include "Game.h"
 
-#include "../Components/Camera.h"
-#include "../Components/CameraFPSController.h"
-#include "../Components/CubeComponent.h"
-#include "../Components/SphereComponent.h"
-#include "../../MoveRotateComponent.h"
-#include "../../ResetAndRotate.h"
-#include "../../Color.h"
+#include "Components/Camera/Camera.h"
+#include "Components/Camera/CameraFPSController.h"
+#include "Components/CubeComponent.h"
+#include "Components/SphereComponent.h"
+#include "Components/ResetAndRotate.h"
+#include "Core/Color.h"
 
 class SceneGame : public Game
 {

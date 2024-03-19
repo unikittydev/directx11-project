@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Games/Game.h"
+#include "Games/Game.h"
 #include "Mesh.h"
 
 // TODO: PRIMITIVES DON'T NEED VERTEX COLOR

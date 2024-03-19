@@ -1,10 +1,9 @@
 #pragma once
 
-#include "Source/Games/Game.h"
-#include "Source/Components/Transform.h"
-#include "Source/Components/Camera.h"
-#include "Source/Input/InputDevice.h"
-#include "Source/Components/IComponent.h"
+#include "Components/Transform.h"
+#include "Components/Camera/Camera.h"
+#include "Input/InputDevice.h"
+#include "Components/IComponent.h"
 
 class CameraOrbitController : public IComponent
 {

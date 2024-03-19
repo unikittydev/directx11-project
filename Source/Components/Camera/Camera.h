@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../ThirdParty/SimpleMath.h"
-#include "IComponent.h"
+#include "Core/Types.h"
+#include "Components/IComponent.h"
 
 class Transform;
 

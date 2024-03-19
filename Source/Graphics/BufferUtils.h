@@ -2,7 +2,7 @@
 
 #include <d3d11.h>
 
-#include "../Application/Application.h"
+#include "Application/Application.h"
 
 template<typename TVertex>
 void CreateVertexBuffer(UINT count, TVertex* vertices, ID3D11Buffer** buffer)

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Source/Components/IComponent.h"
-#include "Source/Components/Transform.h"
-#include "Source/Games/Game.h"
+#include "Components/IComponent.h"
+#include "Components/Transform.h"
+#include "Games/Game.h"
 
 class FollowTarget : public IComponent
 {

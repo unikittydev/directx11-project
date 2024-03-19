@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ThirdParty/SimpleMath.h"
+#include "Core/Types.h"
 
 class Color
 {

@@ -1,9 +1,9 @@
 #include "CameraFPSController.h"
-#include "../Games/Game.h"
+#include "Games/Game.h"
 
-#include "Transform.h"
+#include "Components/Transform.h"
 #include "Camera.h"
-#include "../../CameraOrbitController.h"
+#include "CameraOrbitController.h"
 
 #include <iostream>
 

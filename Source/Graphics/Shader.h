@@ -3,6 +3,8 @@
 #include <string>
 #include <d3d11.h>
 
+#include "InputLayoutOption.h"
+
 class Shader
 {
 private:
@@ -13,8 +15,10 @@ private:
 	ID3D11InputLayout* inputLayout;
 	ID3D11RasterizerState* rasterizerState;
 public:
-	Shader(std::wstring path);
+	Shader(const std::wstring& path, InputLayoutOption layoutOptions);
 
+	void SetInputLayout(ID3D11Device* device, InputLayoutOption layoutOptions);
+	
 	void PrepareDraw();
 
 	void SetActive();

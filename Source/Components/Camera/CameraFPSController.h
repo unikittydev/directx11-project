@@ -1,7 +1,8 @@
 #pragma once
 
-#include "../Input/InputDevice.h"
-#include "IComponent.h"
+#include "Input/InputDevice.h"
+#include "Components/IComponent.h"
+#include "Core/Types.h"
 
 class Transform;
 class Camera;

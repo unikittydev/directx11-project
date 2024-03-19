@@ -1137,12 +1137,6 @@ namespace std
 
 } // namespace std
 
-using float4 = DirectX::SimpleMath::Vector4;
-using float3 = DirectX::SimpleMath::Vector3;
-using float2 = DirectX::SimpleMath::Vector2;
-using matrix = DirectX::SimpleMath::Matrix;
-using quaternion = DirectX::SimpleMath::Quaternion;
-
 #ifdef __clang__
 #pragma clang diagnostic pop
 #endif

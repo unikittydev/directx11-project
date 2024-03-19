@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Input/InputDevice.h"
+#include "Input/InputDevice.h"
 #include "DeviceWrapper.h"
 #include "WindowWrapper.h"
 #include "SwapchainWrapper.h"

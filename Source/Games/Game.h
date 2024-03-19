@@ -6,14 +6,14 @@
 #include <chrono>
 #include <vector>
 #include <queue>
-#include <type_traits>
 #include <map>
 
-#include "../Application/Application.h"
-#include "../../Time.h"
+#include "Application/Application.h"
+#include "Core/Time.h"
 
-#include "../Components/Entity.h"
-#include "../Components/IComponent.h"
+#include "Components/Entity.h"
+#include "Components/IComponent.h"
+#include "Graphics/Shaders.h"
 
 using duration = std::chrono::duration<double>;
 using sys_clock = std::chrono::system_clock;
@@ -27,6 +27,7 @@ class Game
 private:
 	Application app{};
 	Time time{};
+	Shaders shaders{};
 
 	static Game* s_instance;
 
@@ -35,7 +36,7 @@ protected:
 	std::queue<IComponent*> adding{};
 	std::queue<IComponent*> destroying{};
 
-	std::multimap<Entity, IComponent*> entityComponentMap;
+	std::multimap<Entity, IComponent*> entityComponentMap{};
 
 	int lastId;
 
@@ -165,5 +166,5 @@ public:
 	}*/
 };
 
-#include "../../Game.hpp"
+#include "Game.hpp"
 #endif

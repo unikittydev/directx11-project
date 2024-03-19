@@ -1,7 +1,7 @@
 #include "Camera.h"
-#include "Transform.h"
-#include "../Application/Application.h"
-#include "../Games/Game.h"
+#include "Components/Transform.h"
+#include "Application/Application.h"
+#include "Games/Game.h"
 
 void Camera::SetPerspective(float aspectRatio, float fov, float nearPlane, float farPlane)
 {

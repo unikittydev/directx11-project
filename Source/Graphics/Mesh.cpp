@@ -1,11 +1,11 @@
 #include "Mesh.h"
 
-#include "../Application/Application.h"
+#include "Application/Application.h"
 
 void Mesh::Draw(matrix vp, matrix localToWorld)
 {
 	// TODO: DON'T CHANGE RAST STATE IN EVERY DRAW CALL
-	shader.PrepareDraw();
+	shader->PrepareDraw();
 
 	// Setup const buffers
 	worldData._WorldViewProj = (localToWorld * vp).Transpose();
@@ -30,7 +30,7 @@ void Mesh::Draw(matrix vp, matrix localToWorld)
 	ctx->IASetIndexBuffer(indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
 	// Draw
-	shader.SetActive();
+	shader->SetActive();
 
 	ctx->DrawIndexed(indexCount, 0, 0);
 }
@@ -42,7 +42,6 @@ void Mesh::SetColor(float4 color)
 
 void Mesh::Release()
 {
-	shader.Release();
 	vertexBuffer->Release();
 	indexBuffer->Release();
 	worldDataBuffer.Release();

@@ -1,11 +1,11 @@
 #pragma once
 
-#include "../Graphics/Mesh.h"
-#include "../Graphics/Primitives.h"
+#include "Graphics/Mesh.h"
+#include "Graphics/Primitives.h"
 
 #include "IComponent.h"
 #include "Transform.h"
-#include "Camera.h"
+#include "Camera/Camera.h"
 
 class CubeComponent : public IComponent
 {
