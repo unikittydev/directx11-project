@@ -16,15 +16,9 @@ private:
 	static Application* s_instance;
 
 public:
-	Application()
-	{
-		s_instance = this;
-	}
+	Application();
 
-	~Application()
-	{
-		device.Release();
-	}
+	~Application();
 
 	static DeviceWrapper& GetDevice();
 

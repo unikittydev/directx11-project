@@ -109,12 +109,16 @@ public:
 		}
 		
 		Entity eMesh = CreateEntity();
-		AddComponent<Transform>(eMesh);
+		auto* meshTr = AddComponent<Transform>(eMesh);
+		meshTr->SetWorldTranslation({ 0, 10, 0 });
 
 		const auto meshes = ModelImporter::ImportMeshes("C:/Users/Vladislav/source/repos/Direct11Project/Models/SM_Sofa.fbx");
+		const auto texture = Texture2D::LoadFromFile(L"C:/Users/Vladislav/source/repos/Direct11Project/Models/T_Sofa_D.png");
+
 		for (int i = 0; i < meshes.size(); ++i)
 		{
 			auto* mComp = AddComponent<MeshComponent>(eMesh);
+			mComp->SetMainTexture(texture);
 			mComp->SetCamera(cam);
 			mComp->SetMesh(meshes[i]);
 		}

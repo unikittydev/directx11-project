@@ -15,7 +15,7 @@ private:
     {
         float4 position;
         float4 normal;
-        float4 tangent;
+        //float4 tangent;
         float4 uv;
     };
     

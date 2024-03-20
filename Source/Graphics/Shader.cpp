@@ -90,6 +90,16 @@ void Shader::SetInputLayout(ID3D11Device* device, InputLayoutOption layoutOption
 			});
 		offset = D3D11_APPEND_ALIGNED_ELEMENT;
 	}
+	if (HasFlag(layoutOptions, InputLayoutOption::Tangent))
+	{
+		inputs.push_back(
+			D3D11_INPUT_ELEMENT_DESC
+			{
+				"TANGENT", 0, DXGI_FORMAT_R32G32B32A32_FLOAT,
+				0, offset, D3D11_INPUT_PER_VERTEX_DATA, 0
+			});
+		offset = D3D11_APPEND_ALIGNED_ELEMENT;
+	}
 	if (HasFlag(layoutOptions, InputLayoutOption::VertexColor))
 	{
 		inputs.push_back(

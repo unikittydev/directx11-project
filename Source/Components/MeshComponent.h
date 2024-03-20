@@ -1,9 +1,11 @@
 #pragma once
+
 #include "IComponent.h"
-#include "Transform.h"
-#include "Camera/Camera.h"
-#include "Games/Game.h"
-#include "Graphics/Mesh.h"
+#include "Graphics/Texture2D.h"
+
+class Camera;
+class Transform;
+class Mesh;
 
 class MeshComponent : public IComponent
 {
@@ -11,40 +13,25 @@ private:
     Mesh* mesh;
     Transform* tr;
 	Camera* camera;
+
+    Texture2D mainTexture;
     
 public:
-    MeshComponent(Entity e) : IComponent(e)
-    {
-        
-    }
+    MeshComponent(Entity e);
 
-    void SetCamera(Camera* camera)
-    {
-        this->camera = camera;
-    }
+    void SetCamera(Camera* camera);
     
-    void SetMesh(Mesh* mesh)
-    {
-        this->mesh = mesh;
-    }
+    void SetMesh(Mesh* mesh);
 
-    void Init() override
-    {
-        tr = Game::getInstance().GetComponent<Transform>(entity);
-    }
+    void Init() override;
     
-    void Draw() override
-    {
-        mesh->Draw(camera->GetViewProjectionMatrix(), tr->GetWorldMatrix());
-    }
+    void Draw() override;
 
-    void Update() override
-    {
-        
-    }
+    void Update() override;
 
-    void Destroy() override
-    {
-        
-    }
+    void Destroy() override;
+
+    const Texture2D& GetMainTexture() const;
+
+    void SetMainTexture(const Texture2D& texture);
 };

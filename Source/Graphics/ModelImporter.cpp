@@ -11,21 +11,23 @@
 
 Mesh* ModelImporter::ConvertAiMesh(const aiMesh* aMesh)
 {
-    std::vector<Vertex> vertices{};
+    std::vector<ModelImporter::Vertex> vertices{};
     std::vector<UINT> indices{};
         
     for (uint i = 0; i < aMesh->mNumVertices; i++)
         vertices.push_back(Vertex{});
-       
-
+    
     if (aMesh->HasPositions())
         FillPositions(aMesh, vertices);
     if (aMesh->HasNormals())
         FillNormals(aMesh, vertices);
-    if (aMesh->HasTangentsAndBitangents())
-        FillTangents(aMesh, vertices);
+    //if (aMesh->HasTangentsAndBitangents())
+    //    FillTangents(aMesh, vertices);
     if (aMesh->HasTextureCoords(0))
         FillUVs(aMesh, vertices, 0);
+
+    for (const auto v : vertices)
+        std::cout << v.uv.x << " " << v.uv.y << " " << v.uv.z << " " << v.uv.w << " " << std::endl;
     
     for (uint i = 0; i < aMesh->mNumFaces; i++)
     {
@@ -36,9 +38,9 @@ Mesh* ModelImporter::ConvertAiMesh(const aiMesh* aMesh)
     }
 
     Mesh* mesh = Meshes::GetEmpty();
-    mesh->SetVertices(vertices.data(), static_cast<UINT>(vertices.size()));
-    mesh->SetIndices(indices.data(), static_cast<UINT>(indices.size()));
-    mesh->SetShader(Shaders::Get(L"./Shaders/Test.hlsl", Position | Normal | Tangent | UV0));
+    mesh->SetVertices(vertices.data(), static_cast<uint>(vertices.size()));
+    mesh->SetIndices(indices.data(), static_cast<uint>(indices.size()));
+    mesh->SetShader(Shaders::Get(L"./Shaders/Test.hlsl", Position | Normal | UV0));
     return mesh;
 }
 
@@ -71,7 +73,7 @@ void ModelImporter::FillTangents(const aiMesh* aMesh, std::vector<Vertex>& verti
         const aiVector3D aiTangent = aMesh->mTangents[i];
         const float4 tangent = { aiTangent.x, aiTangent.y, aiTangent.z, 0.0f };
 
-        vertices[i].tangent = tangent;
+        //vertices[i].tangent = tangent;
     }
 }
 
@@ -80,7 +82,7 @@ void ModelImporter::FillUVs(const aiMesh* aMesh, std::vector<Vertex>& vertices, 
     for (uint i = 0; i < aMesh->mNumVertices; i++)
     {
         const aiVector3D aiUV = aMesh->mTextureCoords[0][i];
-        const float4 uv = { aiUV.x, aiUV.y, aiUV.z, 0.0f };
+        const float4 uv = { aiUV.x, 1.0f - aiUV.y, aiUV.z, 0.0f };
 
         vertices[i].uv = uv;
     }
@@ -96,7 +98,7 @@ std::vector<Mesh*> ModelImporter::ImportMeshes(const std::string& path)
         aiProcess_OptimizeMeshes |
         aiProcess_JoinIdenticalVertices |
         aiProcess_CalcTangentSpace);
-
+    
     if (scene == nullptr)
         std::cerr << importer.GetErrorString() << std::endl;
 

@@ -1,6 +1,18 @@
 #include "Application.h"
+#include "Graphics/TextureImporter.h"
 
 Application* Application::s_instance = nullptr;
+
+Application::Application()
+{
+	s_instance = this;
+	TextureImporter::Init();
+}
+
+Application::~Application()
+{
+	device.Release();
+}
 
 DeviceWrapper& Application::GetDevice()
 {

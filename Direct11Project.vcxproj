@@ -463,6 +463,7 @@
     <ClCompile Include="Source\Graphics\ModelImporter.cpp" />
     <ClCompile Include="Source\Graphics\Shader.cpp" />
     <ClCompile Include="Source\Graphics\Shaders.cpp" />
+    <ClCompile Include="Source\Graphics\Texture2D.cpp" />
     <ClCompile Include="Source\Graphics\TextureImporter.cpp" />
     <ClCompile Include="Source\Input\Delegates.cpp" />
     <ClCompile Include="Source\Input\InputDevice.cpp" />
@@ -499,6 +500,7 @@
     <ClInclude Include="Source\Graphics\Primitives.h" />
     <ClInclude Include="Source\Graphics\Shader.h" />
     <ClInclude Include="Source\Graphics\Shaders.h" />
+    <ClInclude Include="Source\Graphics\Texture2D.h" />
     <ClInclude Include="Source\Graphics\TextureImporter.h" />
     <ClInclude Include="Source\Input\Delegates.h" />
     <ClInclude Include="Source\Input\InputDevice.h" />
@@ -547,6 +549,7 @@
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
   <ImportGroup Label="Shared">
+    <Import Project="packages\directxtk_desktop_win10.2024.2.22.1\build\native\directxtk_desktop_win10.targets" Condition="Exists('packages\directxtk_desktop_win10.2024.2.22.1\build\native\directxtk_desktop_win10.targets')" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -614,12 +617,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Vladislav\source\repos\Direct11Project\Source;C:\Users\Vladislav\source\repos\Direct11Project\vcpkg\packages\assimp_x64-windows\include\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Vladislav\source\repos\Direct11Project\Source;C:\Users\Vladislav\source\repos\Direct11Project\vcpkg\packages\assimp_x64-windows\include\;C:\Users\Vladislav\source\repos\Direct11Project\packages\directxtk_desktop_win10.2024.2.22.1\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories></AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\Vladislav\source\repos\Direct11Project\packages\directxtk_desktop_win10.2024.2.22.1\native\lib\x64\Debug</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -644,5 +647,6 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
+    <Error Condition="!Exists('packages\directxtk_desktop_win10.2024.2.22.1\build\native\directxtk_desktop_win10.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\directxtk_desktop_win10.2024.2.22.1\build\native\directxtk_desktop_win10.targets'))" />
   </Target>
 </Project>

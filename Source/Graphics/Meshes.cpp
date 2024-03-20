@@ -2,7 +2,7 @@
 
 Meshes* Meshes::s_instance = nullptr;
 
-Meshes::Meshes() : meshes{}
+Meshes::Meshes()
 {
     s_instance = this;
 }
