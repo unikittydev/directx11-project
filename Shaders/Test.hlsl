@@ -60,5 +60,6 @@ PS_IN VSMain(VS_IN input)
 float4 PSMain(PS_IN input) : SV_Target
 {
 	float4 color = _mainTex.Sample(_mainTex_Sampler, input.uv);
-	return color;
+	input.normal = normalize(input.normal);
+	return 1;
 }
