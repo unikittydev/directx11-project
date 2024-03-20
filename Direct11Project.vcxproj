@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application\Application.cpp" />
+    <ClCompile Include="Source\Application\SwapchainWrapper.cpp" />
     <ClCompile Include="Source\Application\WindowWrapper.cpp" />
     <ClCompile Include="Source\Components\Camera\Camera.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
@@ -462,6 +463,7 @@
     <ClCompile Include="Source\Graphics\ModelImporter.cpp" />
     <ClCompile Include="Source\Graphics\Shader.cpp" />
     <ClCompile Include="Source\Graphics\Shaders.cpp" />
+    <ClCompile Include="Source\Graphics\TextureImporter.cpp" />
     <ClCompile Include="Source\Input\Delegates.cpp" />
     <ClCompile Include="Source\Input\InputDevice.cpp" />
   </ItemGroup>
@@ -497,6 +499,7 @@
     <ClInclude Include="Source\Graphics\Primitives.h" />
     <ClInclude Include="Source\Graphics\Shader.h" />
     <ClInclude Include="Source\Graphics\Shaders.h" />
+    <ClInclude Include="Source\Graphics\TextureImporter.h" />
     <ClInclude Include="Source\Input\Delegates.h" />
     <ClInclude Include="Source\Input\InputDevice.h" />
     <ClInclude Include="Source\Input\Keys.h" />

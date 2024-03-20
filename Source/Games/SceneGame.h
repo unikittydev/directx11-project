@@ -108,12 +108,10 @@ public:
 			}
 		}
 		
-		ModelImporter importer{};
-
 		Entity eMesh = CreateEntity();
 		AddComponent<Transform>(eMesh);
 
-		const auto meshes = importer.ImportMeshes("C:/Users/Vladislav/source/repos/Direct11Project/Models/SM_Sofa.fbx");
+		const auto meshes = ModelImporter::ImportMeshes("C:/Users/Vladislav/source/repos/Direct11Project/Models/SM_Sofa.fbx");
 		for (int i = 0; i < meshes.size(); ++i)
 		{
 			auto* mComp = AddComponent<MeshComponent>(eMesh);
