@@ -3,7 +3,7 @@
 
 class Meshes
 {
-    std::vector<Mesh*> meshes;
+    std::vector<std::unique_ptr<Mesh>> meshes;
 
     static Meshes* s_instance;
 public:

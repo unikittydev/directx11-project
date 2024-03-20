@@ -111,16 +111,14 @@ public:
 		ModelImporter importer{};
 
 		Entity eMesh = CreateEntity();
-		auto* meshTr = AddComponent<Transform>(eMesh);
-			
-		Mesh** meshes = nullptr;
-		//int mCount = importer.ImportMeshes("./Models/SM_Sofa.fbx", meshes);
-		//for (int i = 0; i < mCount; ++i)
-		//{
-			//meshes[i]->SetShader(Shaders::Get(L"./Shaders/Test.hlsl", Position));
-			//auto* mComp = AddComponent<MeshComponent>(eMesh);
-			//mComp->SetCamera(cam);
-			//mComp->SetMesh(meshes[i]);
-		//}
+		AddComponent<Transform>(eMesh);
+
+		const auto meshes = importer.ImportMeshes("C:/Users/Vladislav/source/repos/Direct11Project/Models/SM_Sofa.fbx");
+		for (int i = 0; i < meshes.size(); ++i)
+		{
+			auto* mComp = AddComponent<MeshComponent>(eMesh);
+			mComp->SetCamera(cam);
+			mComp->SetMesh(meshes[i]);
+		}
 	}
 };

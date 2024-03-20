@@ -5,7 +5,8 @@ enum InputLayoutOption
     Position = 1,
     VertexColor = 2,
     Normal = 4,
-    UV0 = 8,
+    Tangent = 8,
+    UV0 = 16,
 };
 
 inline InputLayoutOption operator |(const InputLayoutOption a, const InputLayoutOption b)

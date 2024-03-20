@@ -1,22 +1,18 @@
 ﻿#include "Meshes.h"
-#include "ModelImporter.h"
 
 Meshes* Meshes::s_instance = nullptr;
 
-Meshes::Meshes()
+Meshes::Meshes() : meshes{}
 {
     s_instance = this;
 }
 
 Meshes::~Meshes()
 {
-    for (const auto mesh : meshes)
-        delete mesh;
 }
 
 Mesh* Meshes::GetEmpty()
 {
-    auto* mesh = new Mesh();
-    s_instance->meshes.push_back(mesh);
-    return mesh;
+    s_instance->meshes.push_back(std::make_unique<Mesh>());
+    return s_instance->meshes.back().get();
 }

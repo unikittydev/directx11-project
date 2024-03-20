@@ -13,6 +13,7 @@
 
 #include "Components/Entity.h"
 #include "Components/IComponent.h"
+#include "Graphics/Meshes.h"
 #include "Graphics/Shaders.h"
 
 using duration = std::chrono::duration<double>;
@@ -28,6 +29,7 @@ private:
 	Application app{};
 	Time time{};
 	Shaders shaders{};
+	Meshes meshes{};
 
 	static Game* s_instance;
 
@@ -47,7 +49,7 @@ protected:
 
 		//device.GetContext()->ClearState();
 
-		D3D11_VIEWPORT viewport = { 0.0f, 0.0f, (FLOAT)Application::WindowWidth(), (FLOAT)Application::WindowHeight(), 0.0f, 1.0f };
+		D3D11_VIEWPORT viewport = { 0.0f, 0.0f, static_cast<FLOAT>(Application::WindowWidth()), static_cast<FLOAT>(Application::WindowHeight()), 0.0f, 1.0f };
 
 		Application::GetDeviceContext()->RSSetViewports(1, &viewport);
 

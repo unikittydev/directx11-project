@@ -611,7 +611,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Vladislav\source\repos\Direct11Project\Source;C:\Users\Vladislav\source\repos\Direct11Project\ThirdParty\;Source\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Vladislav\source\repos\Direct11Project\Source;C:\Users\Vladislav\source\repos\Direct11Project\vcpkg\packages\assimp_x64-windows\include\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

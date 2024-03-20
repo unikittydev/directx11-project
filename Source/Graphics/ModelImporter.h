@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 #include "Core/Types.h"
 
@@ -13,9 +14,18 @@ private:
     struct Vertex
     {
         float4 position;
+        float4 normal;
+        float4 tangent;
+        float4 uv;
     };
     
-    Mesh* ConvertAiMesh(aiMesh* aMesh);
+    static Mesh* ConvertAiMesh(const aiMesh* aMesh);
+
+    static void FillPositions(const aiMesh* aMesh, std::vector<Vertex>& vertices);
+    static void FillNormals(const aiMesh* aMesh, std::vector<Vertex>& vertices);
+    static void FillTangents(const aiMesh* aMesh, std::vector<Vertex>& vertices);
+    static void FillUVs(const aiMesh* aMesh, std::vector<Vertex>& vertices, uint index);
+    
 public:
-    int ImportMeshes(const std::string& path, Mesh** meshes);
+    static std::vector<Mesh*> ImportMeshes(const std::string& path);
 };
