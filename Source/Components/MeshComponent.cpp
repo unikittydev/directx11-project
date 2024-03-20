@@ -29,6 +29,7 @@ void MeshComponent::Draw()
 {
     Application::GetDeviceContext()->PSSetShaderResources(0, 1, mainTexture.GetSRV());
     Application::GetDeviceContext()->PSSetSamplers(0, 1, mainTexture.GetSampler());
+    
     mesh->Draw(camera->GetViewProjectionMatrix(), tr->GetWorldMatrix());
 }
 

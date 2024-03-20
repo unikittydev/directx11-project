@@ -85,7 +85,7 @@ void Shader::SetInputLayout(ID3D11Device* device, InputLayoutOption layoutOption
 		inputs.push_back(
 			D3D11_INPUT_ELEMENT_DESC
 			{
-				"NORMAL", 0, DXGI_FORMAT_BC7_UNORM,
+				"NORMAL", 0, DXGI_FORMAT_R32G32B32A32_FLOAT,
 				0, offset, D3D11_INPUT_PER_VERTEX_DATA, 0
 			});
 		offset = D3D11_APPEND_ALIGNED_ELEMENT;
@@ -121,7 +121,9 @@ void Shader::SetInputLayout(ID3D11Device* device, InputLayoutOption layoutOption
 		offset = D3D11_APPEND_ALIGNED_ELEMENT;
 	}
 	
-	device->CreateInputLayout(inputs.data(), inputs.size(), vertexShaderBC->GetBufferPointer(), vertexShaderBC->GetBufferSize(), &inputLayout);
+	auto result = device->CreateInputLayout(inputs.data(), inputs.size(), vertexShaderBC->GetBufferPointer(), vertexShaderBC->GetBufferSize(), &inputLayout);
+	if (result != S_OK)
+		std::cerr << "Failed to create input layout. Err code: " << result << std::endl;
 }
 
 void Shader::PrepareDraw()

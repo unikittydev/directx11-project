@@ -61,5 +61,5 @@ float4 PSMain(PS_IN input) : SV_Target
 {
 	float4 color = _mainTex.Sample(_mainTex_Sampler, input.uv);
 	input.normal = normalize(input.normal);
-	return 1;
+	return color * dot(input.normal, normalize(float3(1, 1, 1))) + .3f;
 }

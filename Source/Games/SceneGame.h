@@ -20,7 +20,7 @@ public:
 
 		Entity eCam = CreateEntity();
 		auto* camTr = AddComponent<Transform>(eCam);
-		camTr->SetLocalTranslation({ 0.0f, 0.0f, 20.0f });
+		camTr->SetLocalTranslation({ 0.0f, 0.0f, 0.0f });
 		camTr->SetLocalEuler({ 0.0f, 0.0f, 0.0f });
 
 		auto* cam = AddComponent<Camera>(eCam);
@@ -28,7 +28,6 @@ public:
 
 		Entity eMesh = CreateEntity();
 		auto* meshTr = AddComponent<Transform>(eMesh);
-		meshTr->SetWorldTranslation({ 0, 10, 0 });
 
 		const auto meshes = ModelImporter::ImportMeshes("C:/Users/Vladislav/source/repos/Direct11Project/Models/SM_Sofa.fbx");
 		const auto texture = Texture2D::LoadFromFile(L"C:/Users/Vladislav/source/repos/Direct11Project/Models/T_Sofa_D.png");
@@ -52,8 +51,8 @@ public:
 		sunCube->SetCamera(cam);
 		sunCube->SetColor(Color::yellow);
 
-		auto* sunRotate = AddComponent<ResetAndRotate>(sun);
-		sunRotate->spinSpeed = 1.0f;
+		//auto* sunRotate = AddComponent<ResetAndRotate>(sun);
+		//sunRotate->spinSpeed = 1.0f;
 
 		/*const int planetCount = 8;
 		const int moonCount = 5;

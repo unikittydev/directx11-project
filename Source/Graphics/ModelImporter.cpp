@@ -41,8 +41,10 @@ void ModelImporter::FillPositions(const aiMesh* aMesh, const matrix& transform, 
     auto mat = transform;
     mat.Decompose(scale, rot, p);
 
-    const float scaleFactorScalar = .1f;
+    const float scaleFactorScalar = .005f;
     const float4 scaleFactor = float4{ scaleFactorScalar, scaleFactorScalar, scaleFactorScalar, 1.0f };
+
+    float4 min { DirectX::g_XMInfinity }, max { DirectX::g_XMNegInfinity };
     
     for (uint i = 0; i < aMesh->mNumVertices; i++)
     {
@@ -50,8 +52,11 @@ void ModelImporter::FillPositions(const aiMesh* aMesh, const matrix& transform, 
         float4 position =  D3Dfloat4(aiVertex);
         float4::Transform(position, transform, position);
         
-        vertices[i].position = position;
+        vertices[i].position = position + p;
         vertices[i].position *= scaleFactor;
+
+        min = float4::Min(min, vertices[i].position);
+        max = float4::Max(max, vertices[i].position);
     }
 }
 
@@ -154,9 +159,9 @@ std::vector<Mesh*> ModelImporter::ImportMeshes(const std::string& path)
     if (scene == nullptr)
         std::cerr << importer.GetErrorString() << std::endl;
     
-    std::vector<Mesh*> meshes{};
+    std::vector<Mesh*> m{};
     
-    ProcessMeshes(scene, scene->mRootNode, scene->mRootNode->mTransformation, meshes);
+    ProcessMeshes(scene, scene->mRootNode, scene->mRootNode->mTransformation, m);
 
-    return std::move(meshes);
+    return std::move(m);
 }
