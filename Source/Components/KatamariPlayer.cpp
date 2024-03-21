@@ -70,12 +70,8 @@ void KatamariPlayer::CheckIntersection()
             Game::getInstance().GetComponent<Transform>(e)->SetParent(tr);
             colliders.erase(colliders.begin() + i);
 
-            auto bs = col->GetBS();
-            bs.Radius += addRadius;
-            col->SetBS(bs);
-
             float3 scale = tr->GetLocalScale();
-            scale += float3 { addRadius * 2 };
+            scale += float3 { addRadius };
             tr->SetLocalScale(scale);
             
             break;
