@@ -37,13 +37,15 @@ class Mesh
 {
 private:
 	struct WorldData
-	{
+	{;
 		matrix _WorldViewProj;
+		float4 time;
 	} worldData;
 
 	struct MeshData
 	{
 		float4 color;
+		matrix ltw;
 	} meshData;
 
 	Shader* shader;

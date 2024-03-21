@@ -6,7 +6,7 @@
 
 #include "Application/Application.h"
 
-Shader::Shader(const std::wstring& path, InputLayoutOption layoutOptions)
+Shader::Shader(const std::wstring& path, InputLayoutOption layoutOptions, bool solid = true)
 {
 	ID3DBlob* errorCode = nullptr;
 
@@ -58,8 +58,8 @@ Shader::Shader(const std::wstring& path, InputLayoutOption layoutOptions)
 
 	// Create rasterizer state
 	CD3D11_RASTERIZER_DESC rasterizerDesc = {};
-	rasterizerDesc.CullMode = D3D11_CULL_BACK;
-	rasterizerDesc.FillMode = D3D11_FILL_SOLID;
+	rasterizerDesc.CullMode = solid ? D3D11_CULL_BACK : D3D11_CULL_NONE;
+	rasterizerDesc.FillMode = solid ? D3D11_FILL_SOLID : D3D11_FILL_WIREFRAME;
 
 	device->CreateRasterizerState(&rasterizerDesc, &rasterizerState);
 }

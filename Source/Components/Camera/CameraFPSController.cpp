@@ -24,7 +24,9 @@ void CameraFPSController::Update()
 	//std::cout << "FPS" << tr->GetWorldTranslation().x << " " << tr->GetWorldTranslation().y << " " << tr->GetWorldTranslation().z << std::endl;
 	if (InputDevice::GetInstance()->IsKeyDown(TOGGLE))
 	{
-		Game::getInstance().AddComponent<CameraOrbitController>(entity);
+		auto* controller = Game::getInstance().AddComponent<CameraOrbitController>(entity);
+		controller->SetTarget(target);
+		
 		Game::getInstance().RemoveComponent(entity, this);
 		return;
 	}
@@ -109,4 +111,14 @@ void CameraFPSController::ChangeMode()
 	else if (InputDevice::GetInstance()->IsKeyDown(ORTHOGRAPHIC)) {
 		camera->SetOrtographic();
 	}
+}
+
+void CameraFPSController::SetTarget(Transform* target)
+{
+	this->target = target;
+}
+
+Transform* CameraFPSController::GetTarget() const
+{
+	return target;
 }

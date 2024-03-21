@@ -39,13 +39,14 @@ public:
 	void Bind(ID3D11DeviceContext* ctx, UINT slot)
 	{
 		ctx->VSSetConstantBuffers(slot, 1, &buffer);
+		ctx->PSSetConstantBuffers(slot, 1, &buffer);
 	}
 
 	TBuffer* Map(ID3D11DeviceContext* ctx)
 	{
 		D3D11_MAPPED_SUBRESOURCE res = {};
 		ctx->Map(buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &res);
-		return reinterpret_cast<TBuffer*>(res.pData);
+		return static_cast<TBuffer*>(res.pData);
 	}
 
 	void Unmap(ID3D11DeviceContext* ctx)

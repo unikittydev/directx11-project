@@ -2,6 +2,7 @@
 
 #include "Shaders.h"
 #include "Application/Application.h"
+#include "Core/Time.h"
 
 Mesh::Mesh() : worldDataBuffer(worldData, 1), meshDataBuffer(meshData, 1)
 {
@@ -10,11 +11,13 @@ Mesh::Mesh() : worldDataBuffer(worldData, 1), meshDataBuffer(meshData, 1)
 
 void Mesh::Draw(matrix vp, matrix localToWorld)
 {
+	meshData.ltw = localToWorld;
 	// TODO: DON'T CHANGE RAST STATE IN EVERY DRAW CALL
 	shader->PrepareDraw();
 
 	// Setup const buffers
 	worldData._WorldViewProj = (localToWorld * vp).Transpose();
+	worldData.time = float4{ Time::time(), Time::deltaTime(), DirectX::XMScalarSin(Time::time()), 1 };
 
 	auto* ctx = Application::GetDeviceContext();
 

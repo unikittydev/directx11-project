@@ -12,6 +12,7 @@ class CameraFPSController : public IComponent
 private:
 	Transform* tr;
 	Camera* camera;
+	Transform* target;
 
 	float2 minMaxSpeed = { .01f, 500.0f };
 	float moveSpeed = 10.0f;
@@ -42,6 +43,8 @@ public:
 	void Draw() override;
 	void Destroy() override;
 
+	Transform* GetTarget() const;
+	void SetTarget(Transform* target);
 private:
 	void Move();
 	void RotateCamera(const InputDevice::MouseMoveEventArgs& args);

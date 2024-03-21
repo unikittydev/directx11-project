@@ -2,6 +2,7 @@
 struct WorldData
 {
 	float4x4 _WorldViewProj;
+	float4 _Time;
 };
 
 struct MeshData
@@ -46,5 +47,5 @@ PS_IN VSMain(VS_IN input)
 
 float4 PSMain(PS_IN input) : SV_Target
 {
-	return input.uv;
+	return input.uv + worldData._Time.z;
 }

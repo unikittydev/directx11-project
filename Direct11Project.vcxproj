@@ -238,7 +238,12 @@
       <SDLCheck>true</SDLCheck>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
+    <ClCompile Include="Source\Components\KatamariPlayer.cpp" />
+    <ClCompile Include="Source\Components\Light\Light.cpp" />
     <ClCompile Include="Source\Components\MeshComponent.cpp" />
+    <ClCompile Include="Source\Components\MeshSpawner.cpp" />
+    <ClCompile Include="Source\Components\SphereCollider.cpp" />
+    <ClCompile Include="Source\Components\SphereComponent.cpp" />
     <ClCompile Include="Source\Components\Transform.cpp" />
     <ClCompile Include="Source\Core\Color.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
@@ -457,7 +462,9 @@
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Source\Games\Game.cpp" />
+    <ClCompile Include="Source\Games\SceneGame.cpp" />
     <ClCompile Include="Source\Graphics\BufferUtils.cpp" />
+    <ClCompile Include="Source\Graphics\LightingData.cpp" />
     <ClCompile Include="Source\Graphics\Mesh.cpp" />
     <ClCompile Include="Source\Graphics\Meshes.cpp" />
     <ClCompile Include="Source\Graphics\ModelImporter.cpp" />
@@ -480,9 +487,13 @@
     <ClInclude Include="Source\Components\Entity.h" />
     <ClInclude Include="Source\Components\FollowTarget.h" />
     <ClInclude Include="Source\Components\IComponent.h" />
+    <ClInclude Include="Source\Components\KatamariPlayer.h" />
+    <ClInclude Include="Source\Components\Light\Light.h" />
     <ClInclude Include="Source\Components\MeshComponent.h" />
+    <ClInclude Include="Source\Components\MeshSpawner.h" />
     <ClInclude Include="Source\Components\MoveRotateComponent.h" />
     <ClInclude Include="Source\Components\ResetAndRotate.h" />
+    <ClInclude Include="Source\Components\SphereCollider.h" />
     <ClInclude Include="Source\Components\SphereComponent.h" />
     <ClInclude Include="Source\Components\Transform.h" />
     <ClInclude Include="Source\Core\Color.h" />
@@ -495,6 +506,7 @@
     <ClInclude Include="Source\Graphics\BufferUtils.h" />
     <ClInclude Include="Source\Graphics\ConstantBuffer.h" />
     <ClInclude Include="Source\Graphics\InputLayoutOption.h" />
+    <ClInclude Include="Source\Graphics\LightingData.h" />
     <ClInclude Include="Source\Graphics\Mesh.h" />
     <ClInclude Include="Source\Graphics\Mesh.hpp" />
     <ClInclude Include="Source\Graphics\Meshes.h" />
@@ -624,7 +636,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\Vladislav\source\repos\Direct11Project\packages\directxtk_desktop_win10.2024.2.22.1\native\lib\x64\Debug</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\Vladislav\source\repos\Direct11Project\packages\directxtk_desktop_win10.2024.2.22.1\native\lib\x64\Debug;</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

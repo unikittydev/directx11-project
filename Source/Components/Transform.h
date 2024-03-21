@@ -62,4 +62,7 @@ public:
 	float3 GetForward() const;
 	float3 GetRight() const;
 	float3 GetUp() const;
+
+	float3 TransformTranslation(const float3& translation) const;
+	float3 InverseTransformTranslation(const float3& translation) const;
 };

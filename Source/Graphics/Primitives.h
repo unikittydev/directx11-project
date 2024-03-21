@@ -5,7 +5,7 @@
 
 // TODO: PRIMITIVES DON'T NEED VERTEX COLOR
 
-Mesh CubePrimitive(const float4& color = { 1.0f, 1.0f, 1.0f, 1.0f })
+inline Mesh CubePrimitive(const float4& color = { 1.0f, 1.0f, 1.0f, 1.0f })
 {
 	struct Vertex
 	{
@@ -73,13 +73,13 @@ Mesh CubePrimitive(const float4& color = { 1.0f, 1.0f, 1.0f, 1.0f })
 		20, 21, 22, 22, 23, 20,
 	};
 
-	mesh.SetIndices(indices, ARRAYSIZE(indices));
+	mesh.SetIndices(indices, ARRAYSIZE(indices), DXGI_FORMAT_R32_UINT);
 	mesh.SetVertices(vertices, ARRAYSIZE(vertices));
 
 	return std::move(mesh);
 }
 
-Mesh SpherePrimitive(const float4& color = { 1.0f, 1.0f, 1.0f, 1.0f })
+inline Mesh SpherePrimitive(const float4& color = { 1.0f, 1.0f, 1.0f, 1.0f })
 {
 	struct Vertex
 	{
@@ -93,8 +93,8 @@ Mesh SpherePrimitive(const float4& color = { 1.0f, 1.0f, 1.0f, 1.0f })
 
 	const float thau = 6.28318530718f;
 
-	const int ringsAmount = 24;
-	const int resolution = 24;
+	const int ringsAmount = 6;
+	const int resolution = 6;
 	const int vertexCount = (ringsAmount + 1) * resolution;
 	Vertex vertices[vertexCount];
 
@@ -131,7 +131,7 @@ Mesh SpherePrimitive(const float4& color = { 1.0f, 1.0f, 1.0f, 1.0f })
 			indices[6 * index + 5] = index;
 		}
 
-	mesh.SetIndices(indices, indexCount);
+	mesh.SetIndices(indices, indexCount, DXGI_FORMAT_R32_UINT);
 	mesh.SetVertices(vertices, vertexCount);
 
 	return std::move(mesh);

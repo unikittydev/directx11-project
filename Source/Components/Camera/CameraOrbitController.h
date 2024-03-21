@@ -34,13 +34,12 @@ public:
 	}
 
 	void Init() override;
-
 	void Update() override;
-
 	void Destroy() override;
-
 	void Draw() override;
-
+	
+	Transform* GetTarget() const;
+	
 	void SetTarget(Transform* tr)
 	{
 		target = tr;

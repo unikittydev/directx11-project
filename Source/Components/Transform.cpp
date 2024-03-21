@@ -22,7 +22,11 @@ void Transform::Destroy()
 
 void Transform::SetParent(Transform* parent)
 {
+	const auto m = GetWorldMatrix();
+	
 	this->parent = parent;
+	
+	SetWorldMatrix(m);
 }
 
 matrix GetDefaultWorldMatrix()
@@ -221,4 +225,14 @@ float3 Transform::GetRight() const
 float3 Transform::GetUp() const
 {
 	return GetWorldMatrix().Up();
+}
+
+float3 Transform::TransformTranslation(const float3& translation) const
+{
+	return DirectX::XMVector3Transform(translation, GetWorldMatrix());
+}
+
+float3 Transform::InverseTransformTranslation(const float3& translation) const
+{
+	return DirectX::XMVector3Transform(translation, GetWorldMatrix().Invert());
 }

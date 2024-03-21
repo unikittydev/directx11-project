@@ -1,52 +1,28 @@
 #pragma once
 
 #include "IComponent.h"
-#include "Transform.h"
-#include "Camera/Camera.h"
-
 #include "Graphics/Mesh.h"
-#include "Graphics/Primitives.h"
+
+class Transform;
 
 class SphereComponent : public IComponent
 {
 private:
 	Transform* tr;
-
-	Mesh mesh{ ::SpherePrimitive() };
+	Mesh mesh;
 
 public:
-	SphereComponent(Entity e) : IComponent(e)
-	{
+	SphereComponent(Entity e);
 
-	}
+	void Init() override;
 
-	void Init() override
-	{
-		this->tr = Game::getInstance().GetComponent<Transform>(entity);
-	}
+	void Update() override;
 
-	void Update() override
-	{
-		if (InputDevice::GetInstance()->IsKeyDown(Keys::Enter))
-		{
-			Game::getInstance().RemoveComponent(entity, tr);
-			Game::getInstance().RemoveComponent(entity, this);
-		}
-	}
+	void Draw() override;
 
-	void Draw() override
-	{
-		matrix vp = Camera::GetActive()->GetViewProjectionMatrix();
-		mesh.Draw(vp, tr->GetWorldMatrix());
-	}
+	void Destroy() override;
 
-	void Destroy() override
-	{
-		mesh.Release();
-	}
+	void SetColor(float4 color);
 
-	void SetColor(float4 color)
-	{
-		mesh.SetColor(color);
-	}
+	void SetShader(Shader* shader);
 };

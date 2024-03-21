@@ -15,7 +15,7 @@ private:
 	ID3D11InputLayout* inputLayout;
 	ID3D11RasterizerState* rasterizerState;
 public:
-	Shader(const std::wstring& path, InputLayoutOption layoutOptions);
+	Shader(const std::wstring& path, InputLayoutOption layoutOptions, bool solid);
 
 	void SetInputLayout(ID3D11Device* device, InputLayoutOption layoutOptions);
 	
