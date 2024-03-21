@@ -3,6 +3,8 @@
 #include "Application/Application.h"
 #include "Games/Game.h"
 
+Camera* Camera::s_active = nullptr;
+
 void Camera::SetPerspective(float aspectRatio, float fov, float nearPlane, float farPlane)
 {
 	this->aspectRatio = aspectRatio;
@@ -52,6 +54,9 @@ void Camera::Init()
 	this->tr = Game::getInstance().GetComponent<Transform>(entity);
 
 	SetPerspective();
+
+	if (s_active == nullptr)
+		s_active = this;
 }
 
 void Camera::Update()
@@ -85,4 +90,9 @@ matrix Camera::GetViewMatrix() const
 matrix Camera::GetViewProjectionMatrix() const
 {
 	return viewMat * projMat;
+}
+
+Camera* Camera::GetActive()
+{
+	return s_active;
 }

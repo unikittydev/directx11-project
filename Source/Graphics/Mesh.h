@@ -7,6 +7,32 @@
 #include "Shader.h"
 #include "ConstantBuffer.h"
 
+struct Bounds
+{
+	float3 center;
+	float3 extents;
+
+	float3 Min() const
+	{
+		return center - .5f * extents;
+	}
+
+	float3 Max() const
+	{
+		return center + .5f * extents;
+	}
+
+	static float3 Center(const float3& min, const float3& max)
+	{
+		return (min + max) * .5f;
+	}
+	
+	static float3 Extents(const float3& min, const float3& max)
+	{
+		return max - min;
+	}
+};
+
 class Mesh
 {
 private:
@@ -33,71 +59,36 @@ private:
 	ConstantBuffer<WorldData> worldDataBuffer;
 	ConstantBuffer<MeshData> meshDataBuffer;
 
+	Bounds bounds;
 public:
 	Mesh();
 
 	void Release();
 
 	template<typename TIndex>
-	void SetIndices(TIndex* indices, UINT count, DXGI_FORMAT indexFormat = DXGI_FORMAT_R32_UINT)
-	{
-		auto* device = Application::GetDevicePtr();
-		
-		D3D11_BUFFER_DESC bufferDesc = {};
-		bufferDesc.Usage = D3D11_USAGE_DEFAULT;
-		bufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-		bufferDesc.CPUAccessFlags = 0;
-		bufferDesc.MiscFlags = 0;
-		bufferDesc.StructureByteStride = 0;
-		bufferDesc.ByteWidth = sizeof(TIndex) * count;
-
-		D3D11_SUBRESOURCE_DATA bufferData = {};
-		bufferData.pSysMem = indices;
-		bufferData.SysMemPitch = 0;
-		bufferData.SysMemSlicePitch = 0;
-
-		if (indexBuffer != nullptr)
-			indexBuffer->Release();
-
-		device->CreateBuffer(&bufferDesc, &bufferData, &indexBuffer);
-
-		this->indexFormat = indexFormat;
-		this->indexCount = count;
-	}
+	void SetIndices(TIndex* indices, UINT count, DXGI_FORMAT indexFormat);
 
 	template<typename TVertex>
-	void SetVertices(TVertex* vertices, UINT count)
-	{
-		auto* device = Application::GetDevicePtr();
-		
-		D3D11_BUFFER_DESC bufferDesc = {};
-		bufferDesc.Usage = D3D11_USAGE_DEFAULT;
-		bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-		bufferDesc.CPUAccessFlags = 0;
-		bufferDesc.MiscFlags = 0;
-		bufferDesc.StructureByteStride = 0;
-		bufferDesc.ByteWidth = sizeof(TVertex) * count;
-
-		D3D11_SUBRESOURCE_DATA bufferData = {};
-		bufferData.pSysMem = vertices;
-		bufferData.SysMemPitch = 0;
-		bufferData.SysMemSlicePitch = 0;
-
-		if (vertexBuffer != nullptr)
-			vertexBuffer->Release();
-
-		device->CreateBuffer(&bufferDesc, &bufferData, &vertexBuffer);
-
-		this->vertexSize = sizeof(TVertex);
-		this->vertexCount = count;
-	}
+	void SetVertices(TVertex* vertices, UINT count);
 
 	void SetShader(Shader* shader);
 	
 	void SetColor(float4 color);
 
+	void SetBounds(const Bounds& bounds)
+	{
+		this->bounds = bounds;
+	}
+	
 	void Draw(matrix vp, matrix localToWorld);
 
 	UINT GetVertexCount() const;
 	UINT GetIndexCount() const;
+
+	Bounds GetBounds() const
+	{
+		return bounds;
+	}
 };
+
+#include "Mesh.hpp"

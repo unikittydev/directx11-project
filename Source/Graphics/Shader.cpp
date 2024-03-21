@@ -120,8 +120,8 @@ void Shader::SetInputLayout(ID3D11Device* device, InputLayoutOption layoutOption
 			});
 		offset = D3D11_APPEND_ALIGNED_ELEMENT;
 	}
-	
-	auto result = device->CreateInputLayout(inputs.data(), inputs.size(), vertexShaderBC->GetBufferPointer(), vertexShaderBC->GetBufferSize(), &inputLayout);
+
+	const auto result = device->CreateInputLayout(inputs.data(), inputs.size(), vertexShaderBC->GetBufferPointer(), vertexShaderBC->GetBufferSize(), &inputLayout);
 	if (result != S_OK)
 		std::cerr << "Failed to create input layout. Err code: " << result << std::endl;
 }

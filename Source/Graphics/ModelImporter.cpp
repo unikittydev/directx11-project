@@ -8,6 +8,7 @@
 #include "assimp/Importer.hpp"
 #include "assimp/postprocess.h"
 #include "assimp/scene.h"
+#include "Core/strutils.h"
 
 float3 ModelImporter::D3Dfloat3(const aiVector3D& aiVector)
 {
@@ -31,7 +32,7 @@ matrix ModelImporter::D3Dmatrix(const aiMatrix4x4& aiMatrix)
     };
 }
 
-void ModelImporter::FillPositions(const aiMesh* aMesh, const matrix& transform, std::vector<Vertex>& vertices)
+void ModelImporter::FillPositions(const aiMesh* aMesh, const matrix& transform, std::vector<Vertex>& vertices, Bounds& bounds, const ImportSettings& settings)
 {
     // Idk why this works
     float3 p;
@@ -41,8 +42,7 @@ void ModelImporter::FillPositions(const aiMesh* aMesh, const matrix& transform, 
     auto mat = transform;
     mat.Decompose(scale, rot, p);
 
-    const float scaleFactorScalar = .005f;
-    const float4 scaleFactor = float4{ scaleFactorScalar, scaleFactorScalar, scaleFactorScalar, 1.0f };
+    const float4 scaleFactor = float4{ settings.scaleUnit, settings.scaleUnit, settings.scaleUnit, 1.0f };
 
     float4 min { DirectX::g_XMInfinity }, max { DirectX::g_XMNegInfinity };
     
@@ -58,9 +58,15 @@ void ModelImporter::FillPositions(const aiMesh* aMesh, const matrix& transform, 
         min = float4::Min(min, vertices[i].position);
         max = float4::Max(max, vertices[i].position);
     }
+
+    const float3 center { (max + min) * .5f };
+    const float3 extents { max - min };
+    
+    bounds.center = center;
+    bounds.extents = extents;
 }
 
-void ModelImporter::FillNormals(const aiMesh* aMesh, const matrix& transform, std::vector<Vertex>& vertices)
+void ModelImporter::FillNormals(const aiMesh* aMesh, const matrix& transform, std::vector<Vertex>& vertices, const ImportSettings& settings)
 {    
     for (uint i = 0; i < aMesh->mNumVertices; i++)
     {
@@ -74,7 +80,7 @@ void ModelImporter::FillNormals(const aiMesh* aMesh, const matrix& transform, st
     }
 }
 
-void ModelImporter::FillTangents(const aiMesh* aMesh, const matrix& transform, std::vector<Vertex>& vertices)
+void ModelImporter::FillTangents(const aiMesh* aMesh, const matrix& transform, std::vector<Vertex>& vertices, const ImportSettings& settings)
 {
     for (uint i = 0; i < aMesh->mNumVertices; i++)
     {
@@ -85,7 +91,7 @@ void ModelImporter::FillTangents(const aiMesh* aMesh, const matrix& transform, s
     }
 }
 
-void ModelImporter::FillUVs(const aiMesh* aMesh, const matrix& transform, std::vector<Vertex>& vertices, uint index)
+void ModelImporter::FillUVs(const aiMesh* aMesh, const matrix& transform, std::vector<Vertex>& vertices, uint index, const ImportSettings& settings)
 {
     for (uint i = 0; i < aMesh->mNumVertices; i++)
     {
@@ -96,7 +102,7 @@ void ModelImporter::FillUVs(const aiMesh* aMesh, const matrix& transform, std::v
     }
 }
 
-void ModelImporter::ProcessMeshes(const aiScene* scene, const aiNode* node, const aiMatrix4x4& parent, std::vector<Mesh*>& meshes)
+void ModelImporter::ProcessMeshes(const aiScene* scene, const aiNode* node, const aiMatrix4x4& parent, std::vector<Mesh*>& meshes, const ImportSettings& settings)
 {
     const aiMatrix4x4& transform = parent * node->mTransformation;
     const matrix& d3dTransform = D3Dmatrix(transform);
@@ -105,29 +111,31 @@ void ModelImporter::ProcessMeshes(const aiScene* scene, const aiNode* node, cons
         for (uint i = 0; i < node->mNumMeshes; ++i)
         {
             const aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-            ConvertAiMesh(scene, mesh, d3dTransform, meshes);
+            ConvertAiMesh(scene, mesh, d3dTransform, meshes, settings);
         }
 
     for (uint i = 0; i < node->mNumChildren; i++)
-        ProcessMeshes(scene, node->mChildren[i], transform, meshes);
+        ProcessMeshes(scene, node->mChildren[i], transform, meshes, settings);
 }
 
-void ModelImporter::ConvertAiMesh(const aiScene* scene, const aiMesh* aMesh, const matrix& transform, std::vector<Mesh*>& meshes)
+void ModelImporter::ConvertAiMesh(const aiScene* scene, const aiMesh* aMesh, const matrix& transform, std::vector<Mesh*>& meshes, const ImportSettings& settings)
 {
     std::vector<ModelImporter::Vertex> vertices{};
     std::vector<UINT> indices{};
         
     for (uint i = 0; i < aMesh->mNumVertices; i++)
         vertices.push_back(Vertex{});
+
+    Bounds bounds{};
     
     if (aMesh->HasPositions())
-        FillPositions(aMesh, transform, vertices);
+        FillPositions(aMesh, transform, vertices, bounds, settings);
     if (aMesh->HasNormals())
-        FillNormals(aMesh, transform, vertices);
+        FillNormals(aMesh, transform, vertices, settings);
     //if (aMesh->HasTangentsAndBitangents())
     //    FillTangents(aMesh, vertices);
     if (aMesh->HasTextureCoords(0))
-        FillUVs(aMesh, transform, vertices, 0);
+        FillUVs(aMesh, transform, vertices, 0, settings);
     
     for (uint i = 0; i < aMesh->mNumFaces; i++)
     {
@@ -141,15 +149,16 @@ void ModelImporter::ConvertAiMesh(const aiScene* scene, const aiMesh* aMesh, con
     mesh->SetVertices(vertices.data(), static_cast<uint>(vertices.size()));
     mesh->SetIndices(indices.data(), static_cast<uint>(indices.size()));
     mesh->SetShader(Shaders::Get(L"./Shaders/Test.hlsl", Position | Normal | UV0));
+    mesh->SetBounds(bounds);
 
     meshes.push_back(mesh);
 }
 
-std::vector<Mesh*> ModelImporter::ImportMeshes(const std::string& path)
+std::vector<Mesh*> ModelImporter::ImportMeshes(const std::wstring& path, const ImportSettings& settings)
 {
     Assimp::Importer importer;
         
-    const aiScene* scene = importer.ReadFile(path,
+    const aiScene* scene = importer.ReadFile(ws2s(path),
         aiProcess_Triangulate |
         aiProcess_GenNormals |
         aiProcess_OptimizeMeshes |
@@ -161,7 +170,7 @@ std::vector<Mesh*> ModelImporter::ImportMeshes(const std::string& path)
     
     std::vector<Mesh*> m{};
     
-    ProcessMeshes(scene, scene->mRootNode, scene->mRootNode->mTransformation, m);
+    ProcessMeshes(scene, scene->mRootNode, scene->mRootNode->mTransformation, m, settings);
 
     return std::move(m);
 }

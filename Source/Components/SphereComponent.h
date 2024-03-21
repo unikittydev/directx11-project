@@ -11,7 +11,6 @@ class SphereComponent : public IComponent
 {
 private:
 	Transform* tr;
-	Camera* camera;
 
 	Mesh mesh{ ::SpherePrimitive() };
 
@@ -19,12 +18,6 @@ public:
 	SphereComponent(Entity e) : IComponent(e)
 	{
 
-	}
-
-	// TODO: make tr available throught methods and make camera available globally.
-	void SetCamera(Camera* camera)
-	{
-		this->camera = camera;
 	}
 
 	void Init() override
@@ -43,7 +36,7 @@ public:
 
 	void Draw() override
 	{
-		matrix vp = camera->GetViewProjectionMatrix();
+		matrix vp = Camera::GetActive()->GetViewProjectionMatrix();
 		mesh.Draw(vp, tr->GetWorldMatrix());
 	}
 

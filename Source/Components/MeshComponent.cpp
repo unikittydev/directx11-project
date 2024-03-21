@@ -9,11 +9,6 @@ MeshComponent::MeshComponent(Entity e) : IComponent(e)
 {
         
 }
-
-void MeshComponent::SetCamera(Camera* camera)
-{
-    this->camera = camera;
-}
     
 void MeshComponent::SetMesh(Mesh* mesh)
 {
@@ -30,7 +25,7 @@ void MeshComponent::Draw()
     Application::GetDeviceContext()->PSSetShaderResources(0, 1, mainTexture.GetSRV());
     Application::GetDeviceContext()->PSSetSamplers(0, 1, mainTexture.GetSampler());
     
-    mesh->Draw(camera->GetViewProjectionMatrix(), tr->GetWorldMatrix());
+    mesh->Draw(Camera::GetActive()->GetViewProjectionMatrix(), tr->GetWorldMatrix());
 }
 
 void MeshComponent::Update()

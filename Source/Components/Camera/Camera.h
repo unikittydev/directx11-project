@@ -22,6 +22,7 @@ private:
 	float nearPlane = 0.01f;
 	float farPlane = 1000.0f;
 
+	static Camera* s_active;
 public:
 	Camera(Entity e) : IComponent(e)
 	{
@@ -49,4 +50,6 @@ public:
 	matrix GetViewMatrix() const;
 
 	matrix GetViewProjectionMatrix() const;
+
+	static Camera* GetActive();
 };

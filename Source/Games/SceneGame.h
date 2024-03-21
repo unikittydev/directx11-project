@@ -13,7 +13,38 @@
 
 class SceneGame : public Game
 {
-public:
+private:
+	Entity Instantiate(const std::wstring& name, float scale)
+	{
+		Entity e = CreateEntity();
+		auto* tr = AddComponent<Transform>(e);
+
+		const auto meshes = ModelImporter::ImportMeshes(L"C:/Users/Vladislav/source/repos/Direct11Project/Models/SM_" + name + L".fbx", { scale });
+		const auto texture = Texture2D::LoadFromFile(L"C:/Users/Vladislav/source/repos/Direct11Project/Models/T_" + name + L"_D.png");
+
+		float3 min = meshes[0]->GetBounds().Min();
+		float3 max = meshes[0]->GetBounds().Max();
+		for (int i = 1; i < meshes.size(); i++)
+		{
+			min = float3::Min(min, meshes[i]->GetBounds().Min());
+			max = float3::Max(max, meshes[i]->GetBounds().Max());
+		}
+		
+		for (int i = 0; i < meshes.size(); ++i)
+		{
+			Entity eComp = CreateEntity();
+			auto* eCompTr = AddComponent<Transform>(eComp);
+			eCompTr->SetParent(tr);
+			eCompTr->SetLocalTranslation(-Bounds::Center(min, max));
+			
+			auto* mComp = AddComponent<MeshComponent>(eComp);
+			mComp->SetMesh(meshes[i]);
+			mComp->SetMainTexture(texture);
+		}
+
+		return e;
+	}
+public:	
 	SceneGame() : Game()
 	{
 		// Camera
@@ -26,19 +57,15 @@ public:
 		auto* cam = AddComponent<Camera>(eCam);
 		auto* camController = AddComponent<CameraFPSController>(eCam);
 
-		Entity eMesh = CreateEntity();
-		auto* meshTr = AddComponent<Transform>(eMesh);
-
-		const auto meshes = ModelImporter::ImportMeshes("C:/Users/Vladislav/source/repos/Direct11Project/Models/SM_Sofa.fbx");
-		const auto texture = Texture2D::LoadFromFile(L"C:/Users/Vladislav/source/repos/Direct11Project/Models/T_Sofa_D.png");
-
-		for (int i = 0; i < meshes.size(); ++i)
-		{
-			auto* mComp = AddComponent<MeshComponent>(eMesh);
-			mComp->SetMainTexture(texture);
-			mComp->SetCamera(cam);
-			mComp->SetMesh(meshes[i]);
-		}
+		// Meshes
+		Instantiate(L"Sofa", .005f);
+		Instantiate(L"Beachball", .005f);
+		Instantiate(L"Apple", .005f);
+		Instantiate(L"Barrel", .005f);
+		Instantiate(L"Tree_1", .005f);
+		Instantiate(L"Hammer", .005f);
+		Instantiate(L"Boulder", .005f);
+		//Instantiate(L"Chicken", .005f);
 		
 		// Sun
 
@@ -48,7 +75,6 @@ public:
 		sunTr->SetWorldTranslation({-3, 3, 10});
 		
 		auto* sunCube = AddComponent<SphereComponent>(sun);
-		sunCube->SetCamera(cam);
 		sunCube->SetColor(Color::yellow);
 
 		//auto* sunRotate = AddComponent<ResetAndRotate>(sun);
@@ -76,7 +102,6 @@ public:
 			planetTr->SetWorldScale(float3{ 1.0f, 1.0f, 1.0f });
 
 			auto* planetCube = AddComponent<CubeComponent>(planet);
-			planetCube->SetCamera(cam);
 			planetCube->SetColor(planetColors[i]);
 
 			auto* resetPlanet = AddComponent<ResetAndRotate>(planet);
@@ -108,7 +133,6 @@ public:
 				moonTr->SetWorldScale({ 0.5f, 0.5f, 0.5f });
 
 				auto* moonCube = AddComponent<CubeComponent>(moon);
-				moonCube->SetCamera(cam);
 				moonCube->SetColor(moonColors[j]);
 
 				auto* resetMoon = AddComponent<ResetAndRotate>(moon);

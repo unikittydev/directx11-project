@@ -486,6 +486,7 @@
     <ClInclude Include="Source\Components\SphereComponent.h" />
     <ClInclude Include="Source\Components\Transform.h" />
     <ClInclude Include="Source\Core\Color.h" />
+    <ClInclude Include="Source\Core\strutils.h" />
     <ClInclude Include="Source\Core\Time.h" />
     <ClInclude Include="Source\Core\Types.h" />
     <ClInclude Include="Source\Games\Game.h" />
@@ -495,6 +496,7 @@
     <ClInclude Include="Source\Graphics\ConstantBuffer.h" />
     <ClInclude Include="Source\Graphics\InputLayoutOption.h" />
     <ClInclude Include="Source\Graphics\Mesh.h" />
+    <ClInclude Include="Source\Graphics\Mesh.hpp" />
     <ClInclude Include="Source\Graphics\Meshes.h" />
     <ClInclude Include="Source\Graphics\ModelImporter.h" />
     <ClInclude Include="Source\Graphics\Primitives.h" />

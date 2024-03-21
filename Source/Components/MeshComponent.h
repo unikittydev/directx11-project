@@ -12,15 +12,12 @@ class MeshComponent : public IComponent
 private:
     Mesh* mesh;
     Transform* tr;
-	Camera* camera;
 
     Texture2D mainTexture;
     
 public:
     MeshComponent(Entity e);
 
-    void SetCamera(Camera* camera);
-    
     void SetMesh(Mesh* mesh);
 
     void Init() override;
