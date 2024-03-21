@@ -74,10 +74,10 @@ Entity SceneGame::Instantiate(const std::wstring& name, float scale)
 		colliders.push_back(col);
 
 		
-		auto e = CreateEntity();
-		AddComponent<Transform>(e);
-		col->wireframe = AddComponent<SphereComponent>(e);
-		col->wireframe->SetShader(Shaders::Get(L"C:/Users/Vladislav/source/repos/Direct11Project/x64/Debug/Shaders/White.hlsl", Position | VertexColor | UV0, false));
+		//auto e = CreateEntity();
+		//AddComponent<Transform>(e);
+		//col->wireframe = AddComponent<SphereComponent>(e);
+		//col->wireframe->SetShader(Shaders::Get(L"C:/Users/Vladislav/source/repos/Direct11Project/x64/Debug/Shaders/White.hlsl", Position | VertexColor | UV0, false));
 	}
 	
 	// Meshes
@@ -89,11 +89,11 @@ Entity SceneGame::Instantiate(const std::wstring& name, float scale)
 	kat->SetItems(colliders);
 	camController->SetTarget(GetComponent<Transform>(sofa));
 
-	auto ewf = CreateEntity();
-	AddComponent<Transform>(ewf);
-	sofaCol->wireframe = AddComponent<SphereComponent>(ewf);
-	sofaCol->wireframe->SetShader(Shaders::Get(L"C:/Users/Vladislav/source/repos/Direct11Project/x64/Debug/Shaders/White.hlsl", Position | VertexColor | UV0, false));
-	sofaCol->wireframe->SetColor(Color::purple);
+	//auto ewf = CreateEntity();
+	//AddComponent<Transform>(ewf);
+	//sofaCol->wireframe = AddComponent<SphereComponent>(ewf);
+	//sofaCol->wireframe->SetShader(Shaders::Get(L"C:/Users/Vladislav/source/repos/Direct11Project/x64/Debug/Shaders/White.hlsl", Position | VertexColor | UV0, false));
+	//sofaCol->wireframe->SetColor(Color::purple);
 	// Sun
 
 	/*Entity sun = CreateEntity();
