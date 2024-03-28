@@ -34,8 +34,7 @@ public:
 
 	void Draw() override
 	{
-		matrix vp = Camera::GetActive()->GetViewProjectionMatrix();
-		mesh.Draw(vp, tr->GetWorldMatrix());
+		mesh.Draw(tr->GetWorldMatrix(), tr->GetWorldTranslation());
 	}
 
 	void Destroy() override

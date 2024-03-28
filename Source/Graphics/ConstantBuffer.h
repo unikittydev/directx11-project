@@ -53,4 +53,12 @@ public:
 	{
 		ctx->Unmap(buffer, 0);
 	}
+
+	void SetDataAndBind(ID3D11DeviceContext* ctx, const TBuffer& data, UINT slot)
+	{
+		auto* pWorldData = Map(ctx);
+		pWorldData[0] = data;
+		Unmap(ctx);
+		Bind(ctx, slot);
+	}
 };

@@ -2,35 +2,27 @@
 
 #include "Shaders.h"
 #include "Application/Application.h"
-#include "Core/Time.h"
 
-Mesh::Mesh() : worldDataBuffer(worldData, 1), meshDataBuffer(meshData, 1)
+Mesh::Mesh() : meshDataBuffer(meshData, 1)
 {
-	shader = Shaders::Get(L"./Shaders/Default.hlsl", Position | VertexColor | UV0);
+	shader = Shaders::Get(L"./Shaders/Default.hlsl", Position | VertexColor | UV0, RastState::Solid);
 }
 
-void Mesh::Draw(matrix vp, matrix localToWorld)
+void Mesh::Draw(const matrix& localToWorld, const float3& pos)
 {
 	meshData.ltw = localToWorld;
-	// TODO: DON'T CHANGE RAST STATE IN EVERY DRAW CALL
+	meshData.pos = float4{ pos };
+	
 	shader->PrepareDraw();
 
 	// Setup const buffers
-	worldData._WorldViewProj = (localToWorld * vp).Transpose();
-	worldData.time = float4{ Time::time(), Time::deltaTime(), DirectX::XMScalarSin(Time::time()), 1 };
-
 	auto* ctx = Application::GetDeviceContext();
-
-	auto* pWorldData = worldDataBuffer.Map(ctx);
-	pWorldData[0] = worldData;
-	worldDataBuffer.Unmap(ctx);
-
+	
 	auto* pMeshData = meshDataBuffer.Map(ctx);
 	pMeshData[0] = meshData;
 	meshDataBuffer.Unmap(ctx);
 
-	worldDataBuffer.Bind(ctx, 0);
-	meshDataBuffer.Bind(ctx, 1);
+	meshDataBuffer.Bind(ctx, 0);
 
 	// Setup vertex and index buffers
 	const UINT strides[] = { vertexSize };
@@ -49,19 +41,27 @@ void Mesh::SetShader(Shader* shader)
 	this->shader = shader;
 }
 
-void Mesh::SetColor(float4 color)
+void Mesh::SetColor(const float4& color)
 {
 	meshData.color = color;
+}
+
+void Mesh::SetSpecular(const float4& specular)
+{
+	meshData.specular = specular;
+}
+
+void Mesh::SetSmoothness(float smoothness)
+{
+	meshData.smoothness = smoothness;
 }
 
 void Mesh::Release()
 {
 	vertexBuffer->Release();
 	indexBuffer->Release();
-	worldDataBuffer.Release();
 	meshDataBuffer.Release();
 }
-
 
 UINT Mesh::GetVertexCount() const
 {

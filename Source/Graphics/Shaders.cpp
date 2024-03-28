@@ -18,12 +18,12 @@ Shaders::~Shaders()
     //}
 }
 
-Shader* Shaders::Get(std::wstring path, InputLayoutOption layoutOptions, bool solid)
+Shader* Shaders::Get(const std::wstring& path, InputLayoutOption layoutOptions, RastState rsState)
 {
     Shader* shader = s_instance->shaders[path];
     if (shader == nullptr)
     {
-        shader = new Shader(path, layoutOptions, solid);
+        shader = new Shader(path, layoutOptions, rsState);
         s_instance->shaders[path] = shader;
     }
     return shader;

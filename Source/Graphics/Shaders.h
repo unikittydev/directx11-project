@@ -4,6 +4,7 @@
 #include <string>
 
 #include "InputLayoutOption.h"
+#include "RastState.h"
 
 class Shader;
 
@@ -18,5 +19,5 @@ public:
 
     ~Shaders();
     
-    static Shader* Get(std::wstring path, InputLayoutOption layoutOptions, bool solid = true);
+    static Shader* Get(const std::wstring& path, InputLayoutOption layoutOptions, RastState rsState);
 };

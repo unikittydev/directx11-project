@@ -25,7 +25,7 @@ void MeshComponent::Draw()
     Application::GetDeviceContext()->PSSetShaderResources(0, 1, mainTexture.GetSRV());
     Application::GetDeviceContext()->PSSetSamplers(0, 1, mainTexture.GetSampler());
     
-    mesh->Draw(Camera::GetActive()->GetViewProjectionMatrix(), tr->GetWorldMatrix());
+    mesh->Draw(tr->GetWorldMatrix(), tr->GetWorldTranslation());
 }
 
 void MeshComponent::Update()

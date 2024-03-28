@@ -25,8 +25,7 @@ void SphereComponent::Update()
 
 void SphereComponent::Draw()
 {
-    matrix vp = Camera::GetActive()->GetViewProjectionMatrix();
-    mesh.Draw(vp, tr->GetWorldMatrix());
+    mesh.Draw(tr->GetWorldMatrix(), tr->GetWorldTranslation());
 }
 
 void SphereComponent::Destroy()

@@ -148,7 +148,7 @@ void ModelImporter::ConvertAiMesh(const aiScene* scene, const aiMesh* aMesh, con
     Mesh* mesh = Meshes::GetEmpty();
     mesh->SetVertices(vertices.data(), static_cast<uint>(vertices.size()));
     mesh->SetIndices(indices.data(), static_cast<uint>(indices.size()));
-    mesh->SetShader(Shaders::Get(L"./Shaders/Test.hlsl", Position | Normal | UV0));
+    mesh->SetShader(Shaders::Get(L"./Shaders/Test.hlsl", Position | Normal | UV0, RastState::Solid));
     mesh->SetBounds(bounds);
 
     meshes.push_back(mesh);

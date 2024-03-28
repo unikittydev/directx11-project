@@ -14,6 +14,7 @@
 #include "Components/Entity.h"
 #include "Components/IComponent.h"
 #include "Graphics/Meshes.h"
+#include "Graphics/RenderPipeline.h"
 #include "Graphics/Shaders.h"
 
 using duration = std::chrono::duration<double>;
@@ -24,12 +25,14 @@ class Game
 {
 	friend class InputDevice;
 	friend struct Entity;
+	friend class RenderPipeline;
 
 private:
 	Application app{};
 	Time time{};
 	Shaders shaders{};
 	Meshes meshes{};
+	RenderPipeline renderPipeline{};
 
 	static Game* s_instance;
 
@@ -41,10 +44,6 @@ protected:
 	std::multimap<Entity, IComponent*> entityComponentMap{};
 
 	int lastId;
-	
-	void PreDrawFrame();
-
-	void DrawFrame();
 public:
 	Game();
 
@@ -62,6 +61,8 @@ public:
 
 	template<typename T>
 	T* GetComponent(Entity e);
+
+	RenderPipeline& GetRenderPipeline();
 };
 
 #include "Game.hpp"

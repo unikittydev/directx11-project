@@ -6,6 +6,7 @@
 
 #include "Shader.h"
 #include "ConstantBuffer.h"
+#include "Core/Color.h"
 
 struct Bounds
 {
@@ -36,16 +37,14 @@ struct Bounds
 class Mesh
 {
 private:
-	struct WorldData
-	{;
-		matrix _WorldViewProj;
-		float4 time;
-	} worldData;
-
 	struct MeshData
 	{
-		float4 color;
 		matrix ltw;
+		float4 pos;
+		float4 color = Color::white;
+		float4 specular = Color::black;
+		float smoothness = 0.5f;
+		float pad[3];
 	} meshData;
 
 	Shader* shader;
@@ -58,7 +57,6 @@ private:
 	DXGI_FORMAT indexFormat;
 	UINT indexCount;
 
-	ConstantBuffer<WorldData> worldDataBuffer;
 	ConstantBuffer<MeshData> meshDataBuffer;
 
 	Bounds bounds;
@@ -75,14 +73,16 @@ public:
 
 	void SetShader(Shader* shader);
 	
-	void SetColor(float4 color);
-
+	void SetColor(const float4& specular);
+	void SetSpecular(const float4& specular);
+	void SetSmoothness(float smoothness);
+	
 	void SetBounds(const Bounds& bounds)
 	{
 		this->bounds = bounds;
 	}
 	
-	void Draw(matrix vp, matrix localToWorld);
+	void Draw(const matrix& localToWorld, const float3& pos);
 
 	UINT GetVertexCount() const;
 	UINT GetIndexCount() const;

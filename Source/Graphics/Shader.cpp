@@ -6,7 +6,7 @@
 
 #include "Application/Application.h"
 
-Shader::Shader(const std::wstring& path, InputLayoutOption layoutOptions, bool solid = true)
+Shader::Shader(const std::wstring& path, InputLayoutOption layoutOptions, RastState rsState)
 {
 	ID3DBlob* errorCode = nullptr;
 
@@ -57,9 +57,39 @@ Shader::Shader(const std::wstring& path, InputLayoutOption layoutOptions, bool s
 	SetInputLayout(device, layoutOptions);
 
 	// Create rasterizer state
-	CD3D11_RASTERIZER_DESC rasterizerDesc = {};
-	rasterizerDesc.CullMode = solid ? D3D11_CULL_BACK : D3D11_CULL_NONE;
-	rasterizerDesc.FillMode = solid ? D3D11_FILL_SOLID : D3D11_FILL_WIREFRAME;
+	CD3D11_RASTERIZER_DESC rasterizerDesc;
+
+	if (rsState == Solid)
+	{
+		rasterizerDesc = {};
+		rasterizerDesc.CullMode = D3D11_CULL_BACK;
+		rasterizerDesc.FillMode = D3D11_FILL_SOLID;
+	}
+	else if (rsState == Wireframe)
+	{
+		rasterizerDesc = {};
+		rasterizerDesc.CullMode = D3D11_CULL_NONE;
+		rasterizerDesc.FillMode = D3D11_FILL_WIREFRAME;
+	}
+	else if (rsState == DepthOnly)
+	{
+		const INT depthBias = -3000;
+		const FLOAT depthBiasClamp = 0;
+		const FLOAT scaledDepthBias = 0.5;
+		
+		rasterizerDesc = CD3D11_RASTERIZER_DESC{
+			D3D11_FILL_SOLID,
+			D3D11_CULL_FRONT,
+			TRUE,
+			depthBias,
+			depthBiasClamp,
+			scaledDepthBias,
+			TRUE,
+			FALSE,
+			FALSE,
+			FALSE
+		};
+	}
 
 	device->CreateRasterizerState(&rasterizerDesc, &rasterizerState);
 }

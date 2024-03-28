@@ -49,7 +49,7 @@ void Camera::Init()
 {
 	width = Application::WindowWidth();
 	height = Application::WindowHeight();
-	aspectRatio = (float)width / height;
+	aspectRatio = static_cast<float>(width) / static_cast<float>(height);
 
 	this->tr = Game::getInstance().GetComponent<Transform>(entity);
 
