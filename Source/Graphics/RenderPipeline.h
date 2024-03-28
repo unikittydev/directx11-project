@@ -5,6 +5,7 @@
 #include "ShadowMap.h"
 #include "Core/Types.h"
 
+class Mesh;
 class Light;
 
 class RenderPipeline
@@ -45,7 +46,7 @@ private:
     Light* main;
     std::vector<Light*> additional;
     
-    static const uint MAIN_SHADOW_RESOLUTION = 1024;
+    static const uint MAIN_SHADOW_RESOLUTION = 2048;
     ShadowMap mainShadowMap;
     
     ConstantBuffer<WorldData> worldDataBuffer;

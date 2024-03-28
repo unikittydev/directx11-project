@@ -12,18 +12,16 @@ void Mesh::Draw(const matrix& localToWorld, const float3& pos)
 {
 	meshData.ltw = localToWorld;
 	meshData.pos = float4{ pos };
+	meshData.smoothness = 0.5f;
+	meshData.specular = float4{ 0.7f, 0.7f, 0.7f, 1.0f };
 	
 	shader->PrepareDraw();
 
 	// Setup const buffers
 	auto* ctx = Application::GetDeviceContext();
+
+	meshDataBuffer.SetDataAndBind(ctx, meshData, 0);
 	
-	auto* pMeshData = meshDataBuffer.Map(ctx);
-	pMeshData[0] = meshData;
-	meshDataBuffer.Unmap(ctx);
-
-	meshDataBuffer.Bind(ctx, 0);
-
 	// Setup vertex and index buffers
 	const UINT strides[] = { vertexSize };
 	const UINT offsets[] = { 0 };

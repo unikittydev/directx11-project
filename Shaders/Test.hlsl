@@ -109,8 +109,8 @@ float3 LightingLambert(in float3 lightColor, in float3 lightDir, in float3 norma
 
 float3 LightingSpecular(float3 lightColor, in float3 lightDir, in float3 normal, in float3 viewDir, in float3 posWS, in float3 specular, in float smoothness)
 {
-	float3 halfVec = normalize(lightDir + viewDir);
-	float NH = saturate(dot(normal, halfVec));
+	float3 refVec = normalize(reflect(lightDir, normal));
+	float NH = saturate(dot(viewDir, refVec));
 	float modifier = pow(NH, smoothness);
 	float3 specReflection = specular * modifier;
 	
@@ -152,13 +152,14 @@ void GetAdditionalLights(in float3 normal, in float3 viewDir, in float3 posWS, i
 		float3 lightPos = light.position.xyz;
 		float lightRange = light.position.w;
 		float3 lightColor = light.color.rgb;
+		float d = distance(lightPos, posWS);
 
 		float shadowAtten = 1.0f;
-		float distanceAtten = saturate(1.0f - distance(lightPos, posWS) / lightRange);
+		float distanceAtten = saturate(1.0f - d * d / lightRange / lightRange);
 		float3 lightDir = normalize(lightPos - posWS);
 
 		_diffuse += LightingLambert(lightColor * shadowAtten * distanceAtten, lightDir, normal);
-		_specular += LightingSpecular(lightColor, lightDir, normal, viewDir, posWS, white, smoothness);
+		_specular += LightingSpecular(lightColor * distanceAtten, lightDir, normal, viewDir, posWS, white, smoothness);
 		_attenuation += shadowAtten;
 	}
 

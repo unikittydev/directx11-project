@@ -30,7 +30,7 @@ void MeshComponent::Draw()
 
 void MeshComponent::Update()
 {
-        
+    
 }
 
 void MeshComponent::Destroy()

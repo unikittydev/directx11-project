@@ -79,7 +79,7 @@ void ShadowMap::Prepare()
 	ctx->RSSetViewports(1, &viewport);
 
 	ID3D11ShaderResourceView* nullSRV[1] = { nullptr };
-	ctx->PSSetShaderResources(1, 1, nullSRV);
+	//ctx->PSSetShaderResources(1, 1, nullSRV);
 	ctx->OMSetRenderTargets(0, nullptr, depthStencilView);
 	ctx->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1, 0);
 	ctx->OMSetDepthStencilState(dsState, 0);
@@ -111,4 +111,9 @@ matrix ShadowMap::GetViewProjMatrix() const
 ID3D11ShaderResourceView* const* ShadowMap::GetSRV() const
 {
 	return &srv;
+}
+
+ID3D11SamplerState* const* ShadowMap::GetSampler() const
+{
+	return &sampler;
 }

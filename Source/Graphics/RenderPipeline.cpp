@@ -21,6 +21,11 @@ RenderPipeline::RenderPipeline() :
 void RenderPipeline::PrepareShadowPass()
 {
     mainShadowMap.Prepare();
+    
+    auto* ctx = Application::GetDeviceContext();
+    
+    ctx->PSSetShaderResources(1, 1, mainShadowMap.GetSRV());
+    ctx->PSSetSamplers(1, 1, mainShadowMap.GetSampler());
 }
 
 void RenderPipeline::DrawShadowPass()
@@ -40,7 +45,7 @@ void RenderPipeline::Prepare()
     
     ctx->RSSetViewports(1, &viewport);
 
-    const float clearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+    const float clearColor[4] = { 0.5f, 0.85f, 1.0f, 1.0f };
 
     ctx->OMSetRenderTargets(1, &swapchain.GetRenderTargetView(), swapchain.GetDepthStencilView());
     ctx->ClearRenderTargetView(swapchain.GetRenderTargetView(), clearColor);
@@ -75,8 +80,6 @@ void RenderPipeline::Prepare()
     mainLightBuffer.SetDataAndBind(ctx, mainLightData, 2);
     additionalLightBuffer.SetDataAndBind(ctx, additionalLightsData, 3);
     ambientLightBuffer.SetDataAndBind(ctx, ambientLightData, 4);
-
-    //ctx->PSSetShaderResources(1, 1, mainShadowMap.GetSRV());
 }
 
 void RenderPipeline::Draw()

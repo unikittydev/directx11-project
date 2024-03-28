@@ -73,6 +73,7 @@ void KatamariPlayer::CheckIntersection()
             float3 scale = tr->GetLocalScale();
             scale += float3 { addRadius };
             tr->SetLocalScale(scale);
+            tr->Translate({ 0.0f, addRadius, 0.0f });
             
             break;
         }

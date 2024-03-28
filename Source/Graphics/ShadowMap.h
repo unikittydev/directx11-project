@@ -44,4 +44,5 @@ public:
     
     matrix GetViewProjMatrix() const;
     ID3D11ShaderResourceView* const* GetSRV() const;
+    ID3D11SamplerState* const* GetSampler() const;
 };

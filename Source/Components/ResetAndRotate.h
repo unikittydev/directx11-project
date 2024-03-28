@@ -31,8 +31,7 @@ public:
 		float x, y;
 		DirectX::XMScalarSinCos(&x, &y, arg);
 
-		if (tr->GetParent() != nullptr)
-			tr->SetWorldTranslation(tr->GetParent()->GetWorldTranslation() + orbitRadius * float3{ x, 0.0f, y });
+		tr->SetWorldTranslation(orbitRadius * float3{ x, 0.0f, y });
 		tr->SetWorldEuler({ 0.0f, spinSpeed * Time::time(), 0.0f});
 	}
 

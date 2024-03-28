@@ -10,6 +10,7 @@
 #include "Components/SphereCollider.h"
 #include "Graphics/ModelImporter.h"
 #include "Components/Light/Light.h"
+#include "Components/SphereComponent.h"
 
 Entity SceneGame::Instantiate(const std::wstring& name, float scale)
 {
@@ -58,11 +59,6 @@ SceneGame::SceneGame() : Game()
 	auto* cam = AddComponent<Camera>(eCam);
 	auto* camController = AddComponent<CameraFPSController>(eCam);
 
-	auto* camLight = AddComponent<Light>(eCam);
-	camLight->SetColor(Color::yellow);
-	camLight->SetLightType(Light::Point);
-	camLight->SetRange(5.0f);
-
 	std::wstring items[] = { L"Beachball", L"Apple", L"Barrel", L"Tree_1", L"Hammer", L"Boulder" };
 
 	// Items
@@ -100,8 +96,33 @@ SceneGame::SceneGame() : Game()
 	//sofaCol->wireframe->SetColor(Color::purple);
 
 	// Lighting
+	auto* camLight = AddComponent<Light>(sofa);
+	camLight->SetColor(float4{ 0.506f, 0.435f, 0.549f, 1.0f} * 1.0f);
+	camLight->SetLightType(Light::Point);
+	camLight->SetRange(7.0f);
+
 	auto mainLightE = CreateEntity();
 	auto* mainLight = AddComponent<Light>(mainLightE);
 	auto* mainLightTr = AddComponent<Transform>(mainLightE);
 	mainLight->SetLightType(Light::Directional);
+	mainLightTr->SetWorldEuler(float3{ 60.0f, 0.0f, 0.0f });
+	mainLight->SetColor(Color::white * 0.25f);
+
+	auto testLightE = CreateEntity();
+	auto* testLight = AddComponent<Light>(testLightE);
+	testLight->SetColor(Color::red);
+	testLight->SetLightType(Light::Point);
+	testLight->SetRange(5.0f);
+
+	auto* testLightTr = AddComponent<Transform>(testLightE);
+	auto* move = AddComponent<ResetAndRotate>(testLightE);
+	move->orbitRadius = 10;
+	move->orbitSpeed = 1;
+
+	// Floor
+	auto f = Instantiate(L"Plane", 1.0f);
+	auto* ftr = GetComponent<Transform>(f);
+	ftr->SetWorldScale(float3{ .25f, .25f, .25f });
+	ftr->SetWorldRotation(quaternion::Identity);
+	ftr->SetWorldTranslation(float3{ 0.0f, -0.5f, 0.0f });
 }
