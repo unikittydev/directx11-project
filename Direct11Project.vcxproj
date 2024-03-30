@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="PostFX.cpp" />
     <ClCompile Include="Source\Application\Application.cpp" />
     <ClCompile Include="Source\Application\SwapchainWrapper.cpp" />
     <ClCompile Include="Source\Application\WindowWrapper.cpp" />
@@ -477,6 +478,7 @@
     <ClCompile Include="Source\Input\InputDevice.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="PostFX.h" />
     <ClInclude Include="Source\Application\Application.h" />
     <ClInclude Include="Source\Application\DeviceWrapper.h" />
     <ClInclude Include="Source\Application\SwapchainWrapper.h" />

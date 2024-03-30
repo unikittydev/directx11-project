@@ -4,6 +4,7 @@
 #include "ConstantBuffer.h"
 #include "ShadowMap.h"
 #include "Core/Types.h"
+#include "../../PostFX.h"
 
 class Mesh;
 class Light;
@@ -53,6 +54,9 @@ private:
     ConstantBuffer<MainLight> mainLightBuffer;
     ConstantBuffer<AdditionalLights> additionalLightBuffer;
     ConstantBuffer<AmbientLight> ambientLightBuffer;
+
+    PostFX postFX{};
+
 public:
     RenderPipeline();
 

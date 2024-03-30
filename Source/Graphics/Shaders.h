@@ -5,6 +5,7 @@
 
 #include "InputLayoutOption.h"
 #include "RastState.h"
+#include <Graphics/RastState.h>
 
 class Shader;
 

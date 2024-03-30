@@ -14,7 +14,11 @@ private:
 
 public:
     Texture2D();
+
+    Texture2D(uint width, uint height, UINT flags);
     
+    void Release();
+
     static Texture2D LoadFromFile(const std::wstring& path);
 
     uint GetWidth() const;
@@ -24,4 +28,6 @@ public:
     ID3D11ShaderResourceView* const* GetSRV() const;
 
     ID3D11SamplerState* const* GetSampler() const;
+    
+    ID3D11Texture2D* GetTexture() const;
 };

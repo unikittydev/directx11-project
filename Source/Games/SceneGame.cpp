@@ -71,13 +71,7 @@ SceneGame::SceneGame() : Game()
 	{
 		const auto item = spawner.InstantiateRandomMesh();
 		auto* col = AddComponent<SphereCollider>(item);
-		colliders.push_back(col);
-
-		
-		//auto e = CreateEntity();
-		//AddComponent<Transform>(e);
-		//col->wireframe = AddComponent<SphereComponent>(e);
-		//col->wireframe->SetShader(Shaders::Get(L"C:/Users/Vladislav/source/repos/Direct11Project/x64/Debug/Shaders/White.hlsl", Position | VertexColor | UV0, false));
+		colliders.push_back(col);	
 	}
 	
 	// Meshes
@@ -89,15 +83,9 @@ SceneGame::SceneGame() : Game()
 	kat->SetItems(colliders);
 	camController->SetTarget(GetComponent<Transform>(sofa));
 
-	//auto ewf = CreateEntity();
-	//AddComponent<Transform>(ewf);
-	//sofaCol->wireframe = AddComponent<SphereComponent>(ewf);
-	//sofaCol->wireframe->SetShader(Shaders::Get(L"C:/Users/Vladislav/source/repos/Direct11Project/x64/Debug/Shaders/White.hlsl", Position | VertexColor | UV0, false));
-	//sofaCol->wireframe->SetColor(Color::purple);
-
 	// Lighting
 	auto* camLight = AddComponent<Light>(sofa);
-	camLight->SetColor(float4{ 0.506f, 0.435f, 0.549f, 1.0f} * 1.0f);
+	camLight->SetColor(float4{ 0.506f, 0.435f, 0.549f, 1.0f } * 1.0f);
 	camLight->SetLightType(Light::Point);
 	camLight->SetRange(7.0f);
 
@@ -110,7 +98,7 @@ SceneGame::SceneGame() : Game()
 
 	auto testLightE = CreateEntity();
 	auto* testLight = AddComponent<Light>(testLightE);
-	testLight->SetColor(Color::red);
+	testLight->SetColor(Color::blue);
 	testLight->SetLightType(Light::Point);
 	testLight->SetRange(5.0f);
 

@@ -7,6 +7,7 @@
 #include "Core/Color.h"
 #include "Core/Time.h"
 #include "Games/Game.h"
+#include <Graphics/Texture2D.h>
 
 RenderPipeline::RenderPipeline() :
     worldDataBuffer(worldData, 1),
@@ -86,6 +87,8 @@ void RenderPipeline::Draw()
 {
     for (auto&& component : Game::getInstance().components)
         component->Draw();
+
+    postFX.Draw();
     
     Application::GetSwapchainPtr()->Present(1, DXGI_PRESENT_DO_NOT_WAIT);
 }
