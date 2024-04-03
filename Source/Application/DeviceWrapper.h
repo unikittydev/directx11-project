@@ -12,11 +12,11 @@ public:
 	DeviceWrapper()
 	{
 		UINT creationFlags = 0;
-#if _DEBUG
-		creationFlags |= D3D11_CREATE_DEVICE_DEBUG;
-#endif
+//#if NDEBUG
+//		creationFlags |= D3D11_CREATE_DEVICE_DEBUG;
+//#endif
 		D3D_FEATURE_LEVEL featureLevel;
-		const D3D_FEATURE_LEVEL featureLevels[] = { D3D_FEATURE_LEVEL_11_0, D3D_FEATURE_LEVEL_10_0 };
+		const D3D_FEATURE_LEVEL featureLevels[] = { D3D_FEATURE_LEVEL_11_1, D3D_FEATURE_LEVEL_11_0 };
 
 		HRESULT res = D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, creationFlags, featureLevels, 2, D3D11_SDK_VERSION, &device, &featureLevel, &context);
 

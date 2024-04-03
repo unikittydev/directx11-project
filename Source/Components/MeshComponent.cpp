@@ -18,19 +18,17 @@ void MeshComponent::SetMesh(Mesh* mesh)
 void MeshComponent::Init()
 {
     tr = Game::getInstance().GetComponent<Transform>(entity);
+    Game::getInstance().GetRenderPipeline().AddMesh(mesh);
 }
     
 void MeshComponent::Draw()
 {
-    Application::GetDeviceContext()->PSSetShaderResources(0, 1, mainTexture.GetSRV());
-    Application::GetDeviceContext()->PSSetSamplers(0, 1, mainTexture.GetSampler());
-    
-    mesh->Draw(tr->GetWorldMatrix(), tr->GetWorldTranslation());
+
 }
 
 void MeshComponent::Update()
 {
-    
+    mesh->UpdateMeshData(tr->GetWorldMatrix(), tr->GetWorldTranslation());
 }
 
 void MeshComponent::Destroy()
@@ -38,12 +36,7 @@ void MeshComponent::Destroy()
         
 }
 
-const Texture2D& MeshComponent::GetMainTexture() const
+Mesh* MeshComponent::GetMesh() const
 {
-    return mainTexture;
-}
-
-void MeshComponent::SetMainTexture(const Texture2D& texture)
-{
-    mainTexture = texture;
+    return mesh;
 }

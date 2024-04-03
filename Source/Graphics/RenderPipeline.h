@@ -21,7 +21,6 @@ private:
     
     struct MainLight
     {
-        matrix _LightViewProj;
         float4 direction;
         float4 color;
     } mainLightData{};
@@ -47,7 +46,7 @@ private:
     Light* main;
     std::vector<Light*> additional;
     
-    static const uint MAIN_SHADOW_RESOLUTION = 2048;
+    static const uint MAIN_SHADOW_RESOLUTION = 4096;
     ShadowMap mainShadowMap;
     
     ConstantBuffer<WorldData> worldDataBuffer;
@@ -57,6 +56,7 @@ private:
 
     PostFX postFX{};
 
+    std::vector<Mesh*> meshes{};
 public:
     RenderPipeline();
 
@@ -65,6 +65,8 @@ public:
     
     void Prepare();
     void Draw();
+
+    void AddMesh(Mesh* mesh);
 
     void SetMainLight(Light* light);
     int AddAdditionalLight(Light* light);

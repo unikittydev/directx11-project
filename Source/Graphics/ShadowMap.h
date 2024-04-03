@@ -7,13 +7,13 @@
 class IComponent;
 class Transform;
 class Shader;
+class Mesh;
 
 class ShadowMap
 {
 private:
     struct ShadowMapData
     {
-        matrix ltw;
         matrix _ViewProj;
     } shadowMapData;
 
@@ -29,7 +29,7 @@ private:
 
 	Transform* tr;
     
-    const matrix projMatrix = DirectX::XMMatrixOrthographicLH(100.0f, 100.0f, 0.01f, 1000.0f);
+    const matrix projMatrix = DirectX::XMMatrixOrthographicLH(70.0f, 70.0f, 0.0001f, 1000.0f);
 
     Shader* depthShader;
 
@@ -38,7 +38,8 @@ public:
     ~ShadowMap();
 
     void Prepare();
-    void Draw(IComponent* component, const matrix& ltw, const matrix& _ViewProj);
+    void PrepareMesh(Mesh* mesh);
+    void Bind(uint slot);
     
     void SetLightTransform(Transform* tr);
     

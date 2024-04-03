@@ -21,7 +21,6 @@ struct WorldData
 
 struct MainLight
 {
-	float4x4 _LightViewProj;
 	float4 direction;
 	float4 color;
 };
@@ -45,6 +44,11 @@ struct AmbientLight
 	float4 color;
 };
 
+struct ShadowMap
+{
+	float4x4 _LightViewProj;
+};
+
 /* INPUT */
 
 struct VS_IN
@@ -61,7 +65,7 @@ struct PS_IN
 	float4 normal : NORMAL0;
 	//float4 tangent : TANGENT0;
 	float4 uv : TEXCOORD0;
-	float4 posWS : TEXCOORD1;
+	float4 posWS : POSITION1;
 };
 
 /* BUFFERS */
@@ -91,15 +95,36 @@ cbuffer AMBIENT_LIGHT : register(b4)
 	AmbientLight ambientLight;
 }
 
+cbuffer SHADOW_MAP : register(b5)
+{
+	ShadowMap shadowMap;
+}
+
 /* TEXTURES */
 
 Texture2D _mainTex : register(t0);
 SamplerState _mainTex_Sampler : register(s0);
 
 Texture2D _mainShadow : register(t1);
-SamplerState _mainShadow_Sampler : register(s1);
+SamplerComparisonState _mainShadow_Sampler : register(s1);
 
 /* SHADER */
+
+float3 GetMainShadowCoord(in float4 posWS)
+{
+	float4 wvp = mul(shadowMap._LightViewProj, posWS);
+	float3 proj = wvp.xyz / wvp.w;
+	proj.x = proj.x * 0.5f + 0.5f;
+	proj.y = -proj.y * 0.5f + 0.5f;
+	return proj;
+}
+
+float GetMainShadowAttenuation(in float4 posWS)
+{
+	float3 shadowCoord = GetMainShadowCoord(posWS);
+	float atten = _mainShadow.SampleCmp(_mainShadow_Sampler, shadowCoord.xy, shadowCoord.z).r;
+	return atten;
+}
 
 float3 LightingLambert(in float3 lightColor, in float3 lightDir, in float3 normal)
 {
@@ -117,19 +142,19 @@ float3 LightingSpecular(float3 lightColor, in float3 lightDir, in float3 normal,
 	return lightColor * specReflection;
 }
 
-void GetMainLightData(in float3 normal, out float3 diffuse, out float attenuation)
+void GetMainLightData(in float4 posWS, in float3 normal, out float3 diffuse, out float attenuation)
 {
 	float3 lightColor = mainLight.color.rgb;
-	float3 lightDir = -mainLight.direction.xyz;
+	float3 lightDir = mainLight.direction.xyz;
 
 	diffuse = LightingLambert(lightColor, lightDir, normal);
-	attenuation = 1.0f;
+	attenuation = GetMainShadowAttenuation(posWS);
 }
 
 void GetMainLightSpecular(in float3 normal, in float3 viewDir, in float3 posWS, in float3 white, in float smoothness, out float3 specular)
 {
 	float3 lightColor = mainLight.color.rgb;
-	float3 lightDir = -mainLight.direction.xyz;
+	float3 lightDir = mainLight.direction.xyz;
 
 	smoothness = exp2(10 * smoothness + 1);
 
@@ -192,7 +217,7 @@ float4 PSMain(PS_IN input) : SV_Target
 	float attenuationMain = 0;
 
 	float3 viewDir = normalize(input.posWS.xyz - worldData._ViewPos.xyz);
-	GetMainLightData(normal, diffuseMain, attenuationMain);
+	GetMainLightData(input.posWS, normal, diffuseMain, attenuationMain);
 	GetMainLightSpecular(normal, viewDir, input.posWS.xyz, meshData.specular.rgb, meshData.smoothness, specularMain);
 
 	float3 ambient = ambientLight.color.rgb;
@@ -210,6 +235,6 @@ float4 PSMain(PS_IN input) : SV_Target
 	float attenCombined = attenuationMain + attenuationAdditional;
 
 	float3 finalColor = color.rgb * ((diffuseCombined + specularCombined) * attenCombined + ambient);
-	
+
 	return float4(pow(finalColor, 1.0f / 2.2f), 1.0f);
 }

@@ -1,33 +1,52 @@
-cbuffer TransformBuffer : register(b0)
+struct MeshData
 {
-float4x4 world;
-float4x4 world_view_proj;
+	float4x4 ltw;
+	float4 pos;
+	float4 color;
+    float4 specular;
+	float smoothness;
+	float pad[3];
+};
+
+struct ShadowMap
+{
+	float4x4 _ViewProj;
+};
+
+cbuffer MESH_DATA : register(b0)
+{
+	MeshData meshData;
 }
 
-struct VertexShader_Input
+cbuffer LIGHT_DATA : register(b1)
 {
-    float4 pos : POSITION;
+	ShadowMap shadowMap;
+}
+
+struct VS_IN
+{
+	float4 pos : POSITION0;
+	float4 normal : NORMAL0;
+	//float4 tangent : TANGENT0;
+	float4 uv : TEXCOORD0;
 };
 
-struct PixelShader_Input
+struct PS_IN
 {
     float4 pos : SV_POSITION;
-    float4 depth_pos : TEXTURE0;
 };
 
-PixelShader_Input VSMain(VertexShader_Input input)
+PS_IN VSMain(VS_IN input)
 {
-    PixelShader_Input output;
+    PS_IN output = (PS_IN)0;
 
-    output.pos = mul(mul(input.pos, world), world_view_proj);
-    output.depth_pos = output.pos;
+	float4 posWS = mul(meshData.ltw, float4(input.pos.xyz, 1));
+    output.pos = mul(shadowMap._ViewProj, posWS);
 
     return output;
 }
 
-float4 PSMain(PixelShader_Input input) : SV_TARGET
+float4 PSMain(PS_IN input) : SV_TARGET
 {
-    // float depthValue = 0.0001f / (1.0001f - input.depth_pos.z / input.depth_pos.w);
-    float depthValue = input.depth_pos.z / input.depth_pos.w;
-    return float4(depthValue, depthValue, depthValue, 1.0f);
+	return input.pos;
 }

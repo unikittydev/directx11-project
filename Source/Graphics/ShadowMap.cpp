@@ -3,6 +3,8 @@
 #include "Texture2D.h"
 #include "Application/Application.h"
 #include "Components/Transform.h"
+#include "Graphics/Mesh.h"
+#include "Components/Camera/Camera.h"
 
 ShadowMap::ShadowMap(uint resolution, Shader* depthShader) :
 	resolution(resolution),
@@ -29,7 +31,6 @@ ShadowMap::ShadowMap(uint resolution, Shader* depthShader) :
 	depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 	depthStencilViewDesc.Texture2D.MipSlice = 0;
 
-	
 	if (FAILED(device->CreateDepthStencilView(depthStencilTexture, &depthStencilViewDesc, &depthStencilView)))
 		std::cerr << "Failed to create shadow map dsv" << std::endl;
 
@@ -43,10 +44,10 @@ ShadowMap::ShadowMap(uint resolution, Shader* depthShader) :
 		std::cerr << "Failed to create shadow map resource view" << std::endl;
 
 	D3D11_DEPTH_STENCIL_DESC depthStencilStateDesc{};
-	depthStencilStateDesc.DepthEnable = true;
+	depthStencilStateDesc.DepthEnable = TRUE;
 	depthStencilStateDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
 	depthStencilStateDesc.DepthFunc = D3D11_COMPARISON_LESS;
-	depthStencilStateDesc.StencilEnable = false;
+	depthStencilStateDesc.StencilEnable = FALSE;
 
 	device->CreateDepthStencilState(&depthStencilStateDesc, &dsState);
 
@@ -55,7 +56,7 @@ ShadowMap::ShadowMap(uint resolution, Shader* depthShader) :
 	sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
 	sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
 	sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-	sampDesc.ComparisonFunc = D3D11_COMPARISON_LESS_EQUAL;
+	sampDesc.ComparisonFunc = D3D11_COMPARISON_LESS;
 	sampDesc.MinLOD = 0;
 	sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
 	
@@ -78,25 +79,29 @@ void ShadowMap::Prepare()
 	const D3D11_VIEWPORT viewport = { 0.0f, 0.0f, static_cast<FLOAT>(resolution), static_cast<FLOAT>(resolution), 0.0f, 1.0f };
 	ctx->RSSetViewports(1, &viewport);
 
-	ID3D11ShaderResourceView* nullSRV[1] = { nullptr };
-	//ctx->PSSetShaderResources(1, 1, nullSRV);
+	ID3D11ShaderResourceView* nullSRV = nullptr;
+	ctx->PSSetShaderResources(1, 1, &nullSRV);
 	ctx->OMSetRenderTargets(0, nullptr, depthStencilView);
 	ctx->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1, 0);
 	ctx->OMSetDepthStencilState(dsState, 0);
-
+	
+	depthShader->PrepareDraw();
+	depthShader->SetActive();
 }
 
-void ShadowMap::Draw(IComponent* component, const matrix& ltw, const matrix& _ViewProj)
+void ShadowMap::PrepareMesh(Mesh* mesh)
+{
+	Bind(1);
+}
+
+void ShadowMap::Bind(uint slot)
 {
 	auto* ctx = Application::GetDeviceContext();
 
-	shadowMapData.ltw = ltw;
-	shadowMapData._ViewProj = _ViewProj;
-	shadowMapBuffer.SetDataAndBind(ctx, shadowMapData, 0);
-	
-    component->Draw();
+	shadowMapData._ViewProj = GetViewProjMatrix();
+	shadowMapBuffer.SetDataAndBind(ctx, shadowMapData, slot);
 }
-    
+
 void ShadowMap::SetLightTransform(Transform* tr)
 {
     this->tr = tr;
@@ -104,7 +109,7 @@ void ShadowMap::SetLightTransform(Transform* tr)
     
 matrix ShadowMap::GetViewProjMatrix() const
 {
-    return tr->GetWorldMatrix().Invert() * projMatrix;
+	return tr->GetWorldMatrix().Invert() * projMatrix;
 }
 
 

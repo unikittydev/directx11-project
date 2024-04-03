@@ -25,7 +25,6 @@ class Game
 {
 	friend class InputDevice;
 	friend struct Entity;
-	friend class RenderPipeline;
 
 private:
 	Application app{};

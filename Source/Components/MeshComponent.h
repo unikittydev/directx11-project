@@ -12,8 +12,6 @@ class MeshComponent : public IComponent
 private:
     Mesh* mesh;
     Transform* tr;
-
-    Texture2D mainTexture;
     
 public:
     MeshComponent(Entity e);
@@ -28,7 +26,5 @@ public:
 
     void Destroy() override;
 
-    const Texture2D& GetMainTexture() const;
-
-    void SetMainTexture(const Texture2D& texture);
+    Mesh* GetMesh() const;
 };

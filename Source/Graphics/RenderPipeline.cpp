@@ -14,7 +14,7 @@ RenderPipeline::RenderPipeline() :
     mainLightBuffer(mainLightData, 1),
     additionalLightBuffer(additionalLightsData, 1),
     ambientLightBuffer(ambientLightData, 1),
-    mainShadowMap(MAIN_SHADOW_RESOLUTION, Shaders::Get(L"./Shaders/Depth.hlsl", Position, RastState::DepthOnly))
+    mainShadowMap(MAIN_SHADOW_RESOLUTION, Shaders::Get(L"./Shaders/Depth.hlsl", Position | Normal | UV0, RastState::DepthOnly))
 {
     
 }
@@ -22,16 +22,18 @@ RenderPipeline::RenderPipeline() :
 void RenderPipeline::PrepareShadowPass()
 {
     mainShadowMap.Prepare();
-    
-    auto* ctx = Application::GetDeviceContext();
-    
-    ctx->PSSetShaderResources(1, 1, mainShadowMap.GetSRV());
-    ctx->PSSetSamplers(1, 1, mainShadowMap.GetSampler());
 }
 
 void RenderPipeline::DrawShadowPass()
 {
-    
+    auto* ctx = Application::GetDeviceContext();
+
+    for (auto* mesh : meshes)
+    {
+        mesh->Prepare();
+        mainShadowMap.PrepareMesh(mesh);
+        ctx->DrawIndexed(mesh->GetIndexCount(), 0, 0);
+    }
 }
 
 void RenderPipeline::Prepare()
@@ -59,7 +61,6 @@ void RenderPipeline::Prepare()
     worldData._ViewPos = float4{ Game::getInstance().GetComponent<Transform>(camEntity)->GetWorldTranslation() }; 
     worldData.time = float4{ Time::time(), Time::deltaTime(), DirectX::XMScalarSin(Time::time()), 1 };
 
-    mainLightData._LightViewProj = mainShadowMap.GetViewProjMatrix();
     mainLightData.color = main != nullptr ? main->GetColor() : Color::white;
     mainLightData.direction = main != nullptr ? float4 { main->GetTr()->GetForward() } : float4{ 0, 0, 0, 0 };
 
@@ -73,7 +74,7 @@ void RenderPipeline::Prepare()
     std::cout << additionalLightsData.count << std::endl;
     additionalLightsData.count = min(additional.size(), 8);
 
-    ambientLightData.color = float4{ .03f, .03f, .03f, 1.0f };
+    ambientLightData.color = float4{ .01f, .01f, .01f, 1.0f };
     
     // Start binding buffers from 1 since 0 is Mesh::MeshData
 
@@ -81,16 +82,37 @@ void RenderPipeline::Prepare()
     mainLightBuffer.SetDataAndBind(ctx, mainLightData, 2);
     additionalLightBuffer.SetDataAndBind(ctx, additionalLightsData, 3);
     ambientLightBuffer.SetDataAndBind(ctx, ambientLightData, 4);
+    mainShadowMap.Bind(5);
 }
 
 void RenderPipeline::Draw()
 {
-    for (auto&& component : Game::getInstance().components)
-        component->Draw();
+    auto* ctx = Application::GetDeviceContext();
 
-    postFX.Draw();
+    for (auto* mesh : meshes)
+    {
+        mesh->GetShader()->PrepareDraw();
+        mesh->Prepare();
+
+        auto* ctx = Application::GetDeviceContext();
+
+        ctx->PSSetShaderResources(1, 1, mainShadowMap.GetSRV());
+        ctx->PSSetSamplers(1, 1, mainShadowMap.GetSampler());
+
+        mesh->GetShader()->SetActive();
+
+        ctx->DrawIndexed(mesh->GetIndexCount(), 0, 0);
+    }
+
+    //postFX.Draw();
     
-    Application::GetSwapchainPtr()->Present(1, DXGI_PRESENT_DO_NOT_WAIT);
+    //Application::GetSwapchainPtr()->Present(1, DXGI_PRESENT_DO_NOT_WAIT);
+    Application::GetSwapchainPtr()->Present(0, DXGI_PRESENT_DO_NOT_WAIT);
+}
+
+void RenderPipeline::AddMesh(Mesh* mesh)
+{
+    meshes.push_back(mesh);
 }
 
 void RenderPipeline::SetMainLight(Light* light)

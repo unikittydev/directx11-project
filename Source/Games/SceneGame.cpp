@@ -38,7 +38,7 @@ Entity SceneGame::Instantiate(const std::wstring& name, float scale)
 		
 		auto* mComp = AddComponent<MeshComponent>(eComp);
 		mComp->SetMesh(meshes[i]);
-		mComp->SetMainTexture(texture);
+		meshes[i]->SetMainTexture(texture);
 	}
 
 	const float3 scale3 = Bounds::Extents(min, max);
@@ -93,8 +93,9 @@ SceneGame::SceneGame() : Game()
 	auto* mainLight = AddComponent<Light>(mainLightE);
 	auto* mainLightTr = AddComponent<Transform>(mainLightE);
 	mainLight->SetLightType(Light::Directional);
-	mainLightTr->SetWorldEuler(float3{ 60.0f, 0.0f, 0.0f });
 	mainLight->SetColor(Color::white * 0.25f);
+	mainLightTr->SetWorldTranslation(float3{ 0.0f, 20.0f, -20.0f });
+	mainLightTr->SetWorldEuler(float3{ 45.0f, 0.0f, 0.0f });
 
 	auto testLightE = CreateEntity();
 	auto* testLight = AddComponent<Light>(testLightE);
@@ -112,5 +113,11 @@ SceneGame::SceneGame() : Game()
 	auto* ftr = GetComponent<Transform>(f);
 	ftr->SetWorldScale(float3{ .25f, .25f, .25f });
 	ftr->SetWorldRotation(quaternion::Identity);
-	ftr->SetWorldTranslation(float3{ 0.0f, -0.5f, 0.0f });
+	ftr->SetWorldTranslation(float3{ 0.0f, -.5f, 0.0f });
+
+	//auto a = Instantiate(L"Sofa", .1f);
+	//auto atr = GetComponent<Transform>(a);
+	//atr->SetParent(mainLightTr);
+	//atr->SetLocalRotation(quaternion::Identity);
+	//atr->SetLocalTranslation(float3{});
 }

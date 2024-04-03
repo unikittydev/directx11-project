@@ -7,6 +7,7 @@
 #include "Shader.h"
 #include "ConstantBuffer.h"
 #include "Core/Color.h"
+#include "Graphics/Texture2D.h"
 
 struct Bounds
 {
@@ -60,6 +61,8 @@ private:
 	ConstantBuffer<MeshData> meshDataBuffer;
 
 	Bounds bounds;
+
+	Texture2D mainTexture;
 public:
 	Mesh();
 
@@ -82,7 +85,8 @@ public:
 		this->bounds = bounds;
 	}
 	
-	void Draw(const matrix& localToWorld, const float3& pos);
+	void UpdateMeshData(const matrix& localToWorld, const float3& pos);
+	void Prepare();
 
 	UINT GetVertexCount() const;
 	UINT GetIndexCount() const;
@@ -91,6 +95,13 @@ public:
 	{
 		return bounds;
 	}
+
+	Shader* GetShader() const;
+
+	const Texture2D& GetMainTexture() const;
+	void SetMainTexture(const Texture2D& texture);
+
+	matrix GetLocalToWorld() const;
 };
 
 #include "Mesh.hpp"

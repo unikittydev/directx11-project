@@ -25,6 +25,7 @@ public:
 	void Init() override
 	{
 		this->tr = Game::getInstance().GetComponent<Transform>(entity);
+		Game::getInstance().GetRenderPipeline().AddMesh(&mesh);
 	}
 
 	void Update() override
@@ -34,7 +35,6 @@ public:
 
 	void Draw() override
 	{
-		mesh.Draw(tr->GetWorldMatrix(), tr->GetWorldTranslation());
 	}
 
 	void Destroy() override

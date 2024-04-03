@@ -73,9 +73,9 @@ Shader::Shader(const std::wstring& path, InputLayoutOption layoutOptions, RastSt
 	}
 	else if (rsState == DepthOnly)
 	{
-		const INT depthBias = -3000;
-		const FLOAT depthBiasClamp = 0;
-		const FLOAT scaledDepthBias = 0.5;
+		const INT depthBias = 100000;
+		const FLOAT depthBiasClamp = 0.1f;
+		const FLOAT scaledDepthBias = 0.5f;
 		
 		rasterizerDesc = CD3D11_RASTERIZER_DESC{
 			D3D11_FILL_SOLID,
@@ -96,6 +96,8 @@ Shader::Shader(const std::wstring& path, InputLayoutOption layoutOptions, RastSt
 
 void Shader::SetInputLayout(ID3D11Device* device, InputLayoutOption layoutOptions)
 {
+	if ((int)layoutOptions == 0) return;
+
 	std::vector<D3D11_INPUT_ELEMENT_DESC> inputs{};
 
 	unsigned int offset = 0;

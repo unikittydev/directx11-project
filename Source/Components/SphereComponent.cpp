@@ -12,6 +12,7 @@ SphereComponent::SphereComponent(Entity e) : IComponent(e), mesh{::SpherePrimiti
 void SphereComponent::Init()
 {
     this->tr = Game::getInstance().GetComponent<Transform>(entity);
+    Game::getInstance().GetRenderPipeline().AddMesh(&mesh);
 }
 
 void SphereComponent::Update()
@@ -25,7 +26,7 @@ void SphereComponent::Update()
 
 void SphereComponent::Draw()
 {
-    mesh.Draw(tr->GetWorldMatrix(), tr->GetWorldTranslation());
+
 }
 
 void SphereComponent::Destroy()

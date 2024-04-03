@@ -1,37 +1,39 @@
 #include "Mesh.h"
 
+#include "Shader.h"
 #include "Shaders.h"
 #include "Application/Application.h"
+#include <Games/Game.h>
 
 Mesh::Mesh() : meshDataBuffer(meshData, 1)
 {
 	shader = Shaders::Get(L"./Shaders/Default.hlsl", Position | VertexColor | UV0, RastState::Solid);
 }
 
-void Mesh::Draw(const matrix& localToWorld, const float3& pos)
+void Mesh::Prepare()
 {
-	meshData.ltw = localToWorld;
-	meshData.pos = float4{ pos };
 	meshData.smoothness = 0.5f;
 	meshData.specular = float4{ 0.7f, 0.7f, 0.7f, 1.0f };
-	
-	shader->PrepareDraw();
 
-	// Setup const buffers
 	auto* ctx = Application::GetDeviceContext();
-
 	meshDataBuffer.SetDataAndBind(ctx, meshData, 0);
 	
-	// Setup vertex and index buffers
 	const UINT strides[] = { vertexSize };
 	const UINT offsets[] = { 0 };
 	ctx->IASetVertexBuffers(0, 1, &vertexBuffer, strides, offsets);
 	ctx->IASetIndexBuffer(indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
-	// Draw
-	shader->SetActive();
+	// If no texture return
+	if (mainTexture.GetSRV() == nullptr) return;
 
-	ctx->DrawIndexed(indexCount, 0, 0);
+	Application::GetDeviceContext()->PSSetShaderResources(0, 1, mainTexture.GetSRV());
+	Application::GetDeviceContext()->PSSetSamplers(0, 1, mainTexture.GetSampler());
+}
+
+void Mesh::UpdateMeshData(const matrix& localToWorld, const float3& pos)
+{
+	meshData.ltw = localToWorld;
+	meshData.pos = float4{ pos };
 }
 
 void Mesh::SetShader(Shader* shader)
@@ -69,4 +71,25 @@ UINT Mesh::GetVertexCount() const
 UINT Mesh::GetIndexCount() const
 {
 	return indexCount;
+}
+
+
+Shader* Mesh::GetShader() const
+{
+	return shader;
+}
+
+const Texture2D& Mesh::GetMainTexture() const
+{
+	return mainTexture;
+}
+
+void Mesh::SetMainTexture(const Texture2D& texture)
+{
+	mainTexture = texture;
+}
+
+matrix Mesh::GetLocalToWorld() const
+{
+	return meshData.ltw;
 }

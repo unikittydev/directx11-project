@@ -29,7 +29,6 @@ void Game::Run()
             adding.pop();
         }
 
-        renderPipeline.Prepare();
 
         // Update phase
         for (auto&& component : components)
@@ -50,7 +49,12 @@ void Game::Run()
             destroying.pop();
         }
 
+        renderPipeline.PrepareShadowPass();
+        renderPipeline.DrawShadowPass();
+
+        renderPipeline.Prepare();
         renderPipeline.Draw();
+
         time.Finish();
     }
 
